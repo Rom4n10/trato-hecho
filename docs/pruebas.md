@@ -60,6 +60,8 @@ Instala `trato` 0.1.0 con los skills `crear` y `setup`. Costo fijo: ~300 tokens 
 | Recomendada | $ 975.000 · 3 semanas (ARS 15.000/h) |
 | Costo equivalente en API | US$ 0,80 (en planes Pro/Max entra en el uso del plan) |
 
+Segunda corrida, con el diseño 0.2.0 (fotos, íconos, sin emojis), audio de barbería: **2 min 35 s** medidos por el script, 13 pasos, sin errores, `app.json` sin emojis, fotos del catálogo, logo con ícono e iniciales para las personas.
+
 Hallazgo: el modelo estimaba el tiempo total a ojo ("~4 min"). Ahora `doctor.mjs --inicio` marca el comienzo y `publicar.mjs` imprime el tiempo real.
 
 ## Pendiente
