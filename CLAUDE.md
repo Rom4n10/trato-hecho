@@ -25,6 +25,7 @@ Plugin de Claude Code que convierte el audio de WhatsApp de un cliente en: brief
 - Validar: `claude plugin validate .`
 - Transcribir a mano: `node scripts/transcribe.mjs examples/audios/veterinaria.ogg`
 - Diagnóstico: `node scripts/doctor.mjs`
+- Publicar cambios a quien ya lo instaló: subir `version` en `plugin.json`, `marketplace.json` y `package.json` (Claude Code cachea por versión), push, y `claude plugin marketplace update trato-hecho && claude plugin update trato@trato-hecho`.
 
 ## Al terminar cada fase
 1. Probar con un audio real de `examples/audios/`.
