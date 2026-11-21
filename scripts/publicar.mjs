@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Paso final de /vozapp:crear: arma prototipo + propuesta, publica, genera QR y el mensaje de WhatsApp.
 // Uso: node publicar.mjs <carpeta> [--sin-deploy]
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join, basename, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { loadConfig } from './config.mjs';
@@ -26,6 +26,16 @@ export function mensajeWhatsApp(cfg, cot, links) {
     'Miralo con calma y, si te cierra, tocá "Acepto" en la opción que prefieras. Cualquier duda, mandame un audio 🙂',
   ];
   return lineas.join('\n');
+}
+
+// Si una corrida anterior dejó un preview local para esta carpeta, lo cierra antes de abrir otro.
+function cerrarPreviewAnterior(dir) {
+  const ruta = join(dir, 'links.json');
+  if (!existsSync(ruta)) return;
+  try {
+    const { pidServidor } = JSON.parse(readFileSync(ruta, 'utf8'));
+    if (pidServidor) process.kill(pidServidor);
+  } catch { /* ya no corre o links.json inválido */ }
 }
 
 async function main(argv) {
@@ -53,6 +63,7 @@ async function main(argv) {
     }
   }
   if (!base) {
+    cerrarPreviewAnterior(dir);
     const l = await previewLocal(siteDir);
     base = l.url;
     modo = 'local';

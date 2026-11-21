@@ -44,7 +44,7 @@ No escribís HTML. Escribís **`app.json`** (datos + pantallas) y `publicar.mjs`
 | tipo | campos |
 |---|---|
 | `hero` | `titulo`, `texto`, `imagen` (emoji), `accion` `{texto, ir}` |
-| `stats` | `titulo?`, `items` `[{valor, etiqueta}]`. `valor`: texto, `"#turnos"` (cantidad), `"#turnos?estado=Pendiente"` (cantidad filtrada), `"$pedidos.total"` (suma en moneda) |
+| `stats` | `titulo?`, `items` `[{valor, etiqueta}]`. `valor`: texto, `"#turnos"` (cantidad), `"#turnos?estado=Pendiente"` (cantidad filtrada), `"$pedidos.total"` (suma en moneda), `"$pedidos.total?estado=Entregado"` (suma filtrada) |
 | `accesos` | `items` `[{texto, icono, ir?}]` (4 por fila; sin `ir` muestra "se activa en la versión final") |
 | `lista` | `coleccion`, `titulo?`, `item` `{titulo, subtitulo?, detalle?, badge?, precio?, imagen?}`, `ir?`, `buscar?` (bool), `buscarTexto?`, `filtro?` (campo → chips), `orden?` (`"fecha"`, `"-fecha"`), `limite?`, `verTodo?`, `donde?` `{campo: "valor o {campoDelDetalle}"}`, `futuros?`/`pasados?` (campo fecha), `estilo?` (`filas` · `tarjetas` · `timeline`), `vacio?`, `vacioIr?`, `vacioAccion?` |
 | `grilla` | catálogo 2 columnas: `coleccion`, `item` `{titulo, subtitulo?, precio, imagen}`, `carrito?` (bool: botón +, necesita `pantallaCarrito`), `filtro?`, `ir?`. Elementos con `"disponible": false` salen "Agotado" |
@@ -54,7 +54,7 @@ No escribís HTML. Escribís **`app.json`** (datos + pantallas) y `publicar.mjs`
 | `texto` | `titulo?`, `texto` |
 | `aviso` | `texto`, `tono` (`info` · `exito` · `alerta`), `icono?` |
 | `mapa` | `titulo?`, `lugar`, `direccion`, `horario?`, `texto?` (botón "Cómo llegar" a Google Maps) |
-| `barras` | `titulo`, `items` `[{etiqueta, valor}]` o `coleccion` + `agrupar` + `sumar?` (suma en moneda) |
+| `barras` | `titulo`, `items` `[{etiqueta, valor}]` o `coleccion` + `agrupar` + `sumar?` (suma en moneda) + `donde?` |
 | `perfil` | `nombre`, `detalle`, `imagen`, `items` `[{texto, icono, ir?}]` |
 | `titulo` | `texto` (separador de sección) |
 | `html` | `html` — último recurso, solo si ningún bloque sirve |

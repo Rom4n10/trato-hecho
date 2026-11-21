@@ -6,6 +6,7 @@ import { cpSync, mkdirSync, readdirSync, rmSync, existsSync } from 'node:fs';
 import { tmpdir, networkInterfaces } from 'node:os';
 import { join, basename, resolve } from 'node:path';
 import { createServer } from 'node:net';
+import { createSocket } from 'node:dgram';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const WIN = process.platform === 'win32';
@@ -40,6 +41,7 @@ export function elegirIp(ifaces = networkInterfaces()) {
       if (i.family !== 'IPv4' && i.family !== 4) continue;
       if (i.internal) continue;
       let puntaje = 0;
+      if (/^192\.168\.(56|99)\./.test(i.address)) puntaje -= 4; // VirtualBox / docker-machine
       if (/^192\.168\./.test(i.address)) puntaje += 3;
       else if (/^10\./.test(i.address)) puntaje += 2;
       else if (/^172\.(1[6-9]|2\d|3[01])\./.test(i.address)) puntaje += 1;
@@ -49,6 +51,23 @@ export function elegirIp(ifaces = networkInterfaces()) {
   }
   candidatas.sort((a, b) => b.puntaje - a.puntaje);
   return candidatas[0] ? candidatas[0].ip : 'localhost';
+}
+
+// IP de la interfaz con ruta a internet (UDP "connect" no envía paquetes). Si no hay red, heurística.
+export function ipDeSalida() {
+  return new Promise((res) => {
+    const s = createSocket('udp4');
+    const fin = (ip) => { try { s.close(); } catch { /* ya cerrado */ } res(ip); };
+    s.once('error', () => fin(elegirIp()));
+    try {
+      s.connect(53, '8.8.8.8', () => {
+        const ip = s.address().address;
+        fin(ip && ip !== '0.0.0.0' ? ip : elegirIp());
+      });
+    } catch {
+      fin(elegirIp());
+    }
+  });
 }
 
 function correr(cmd, args, { cwd, timeout = 180_000 } = {}) {
@@ -119,7 +138,7 @@ export async function previewLocal(siteDir) {
     } catch { /* todavía arrancando */ }
     await new Promise((r) => setTimeout(r, 100));
   }
-  const ip = elegirIp();
+  const ip = await ipDeSalida();
   return { url: `http://${ip}:${port}/`, local, pid: hijo.pid };
 }
 

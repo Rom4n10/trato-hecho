@@ -53,6 +53,7 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stro
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px}
 .stat{background:var(--s);border:1px solid var(--l);border-radius:var(--r2);padding:12px}
 .stat b{display:block;font-family:var(--ft);font-size:24px;line-height:1.1;font-weight:800;color:var(--p2)}
+.stat b.largo{font-size:clamp(16px,4.6vw,20px);padding-top:4px}
 .stat span{font-size:13px;color:var(--m)}
 .accesos{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .acceso{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;text-align:center;color:var(--t)}
@@ -73,7 +74,9 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stro
 .fila .tx{flex:1;min-width:0}
 .fila .t1{font-weight:700;line-height:1.25}
 .fila .t2{font-size:14px;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fila .der{display:flex;align-items:center;gap:6px;color:var(--m)}
+.fila .der,.tarjeta .der{display:flex;flex-direction:column;align-items:flex-end;gap:4px;color:var(--m);flex:none}
+.chev{color:var(--m);display:flex;margin-right:-4px}
+.der.cant{flex-direction:row;align-items:center;gap:8px}
 .precio{font-family:var(--ft);font-weight:800;color:var(--t);white-space:nowrap}
 .badge{font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;background:var(--pc);color:var(--p2);white-space:nowrap}
 .badge.ok{background:var(--okc);color:var(--ok)}.badge.warn{background:var(--warnc);color:var(--warn)}.badge.bad{background:var(--badc);color:var(--bad)}
@@ -343,7 +346,7 @@ nav.tabs .ic{width:52px;height:30px;border-radius:15px;display:grid;place-items:
   };
   R.titulo = function (b) { return '<div class="cabeza"><h3>' + esc(b.texto || b.titulo) + '</h3></div>'; };
   R.stats = function (b) {
-    return '<section>' + cabeza(b) + '<div class="stats">' + (b.items || []).map(function (s) { return '<div class="stat"><b>' + calc(s.valor) + '</b><span>' + esc(s.etiqueta) + '</span></div>'; }).join('') + '</div></section>';
+    return '<section>' + cabeza(b) + '<div class="stats">' + (b.items || []).map(function (s) { var v = calc(s.valor); return '<div class="stat"><b' + (String(v).length > 7 ? ' class="largo"' : '') + '>' + v + '</b><span>' + esc(s.etiqueta) + '</span></div>'; }).join('') + '</div></section>';
   };
   R.accesos = function (b) {
     return '<section>' + cabeza(b) + '<div class="accesos">' + (b.items || []).map(function (s) { return '<a class="acceso" href="' + (s.ir ? enlace(s.ir) : '#') + '"' + (s.ir ? '' : ' data-pronto="1"') + '><span class="ic">' + icono(s.icono) + '</span>' + esc(s.texto) + '</a>'; }).join('') + '</div></section>';
@@ -353,7 +356,7 @@ nav.tabs .ic{width:52px;height:30px;border-radius:15px;display:grid;place-items:
     var der = '';
     if (it.precio) der += '<span class="precio">' + tpl(it.precio, x) + '</span>';
     if (it.badge) { var bt = crudo(it.badge, x); if (bt) der += '<span class="badge ' + tono(bt) + '">' + esc(bt) + '</span>'; }
-    if (b.ir) der += icono('derecha');
+    var chev = b.ir ? '<span class="chev">' + icono('derecha') + '</span>' : '';
     var buscable = esc([crudo(it.titulo, x), crudo(it.subtitulo, x), crudo(it.badge, x)].join(' ').toLowerCase());
     var filtroV = b.filtro ? esc(x[b.filtro]) : '';
     var attrs = ' data-texto="' + buscable + '" data-f="' + filtroV + '"' + (b.ir ? ' data-ir="' + esc(b.ir) + '" data-param="' + esc(x.id) + '"' : '');
@@ -362,7 +365,7 @@ nav.tabs .ic{width:52px;height:30px;border-radius:15px;display:grid;place-items:
     if (estilo === 'timeline') return '<' + tag + ' class="hito"' + attrs + '><div class="t1">' + tpl(it.titulo, x) + '</div><div class="t2">' + tpl(it.subtitulo, x) + '</div>' + (it.detalle ? '<div class="t2">' + tpl(it.detalle, x) + '</div>' : '') + '</' + tag + '>';
     var av = it.imagen ? '<span class="av">' + tpl(it.imagen, x) + '</span>' : '';
     var cls = estilo === 'tarjetas' ? 'tarjeta' : 'fila';
-    return '<' + tag + ' class="' + cls + '"' + attrs + '>' + av + '<span class="tx"><div class="t1">' + tpl(it.titulo, x) + '</div>' + (it.subtitulo ? '<div class="t2">' + tpl(it.subtitulo, x) + '</div>' : '') + (it.detalle ? '<div class="t2">' + tpl(it.detalle, x) + '</div>' : '') + '</span><span class="der">' + der + '</span></' + tag + '>';
+    return '<' + tag + ' class="' + cls + '"' + attrs + '>' + av + '<span class="tx"><div class="t1">' + tpl(it.titulo, x) + '</div>' + (it.subtitulo ? '<div class="t2">' + tpl(it.subtitulo, x) + '</div>' : '') + (it.detalle ? '<div class="t2">' + tpl(it.detalle, x) + '</div>' : '') + '</span>' + (der ? '<span class="der">' + der + '</span>' : '') + chev + '</' + tag + '>';
   }
   R.lista = function (b, ctx) {
     var lista = ordenar(filtrarDonde(col(b.coleccion), b.donde, ctx), b.orden);
@@ -403,7 +406,7 @@ nav.tabs .ic{width:52px;height:30px;border-radius:15px;display:grid;place-items:
     var h = '<section>' + cabeza(b);
     if (!db._carrito.length) return h + vacio({ vacio: b.vacio || 'Tu pedido está vacío.', vacioEmoji: '🛒', vacioIr: b.vacioIr, vacioAccion: b.vacioAccion || 'Ver el menú' }) + '</section>';
     h += '<div class="filas">' + db._carrito.map(function (c) {
-      return '<div class="fila"><span class="av">' + esc(c.imagen || '•') + '</span><span class="tx"><div class="t1">' + esc(c.nombre) + '</div><div class="t2">' + dinero(c.precio) + ' c/u</div></span><span class="der"><button class="chip" data-menos="' + esc(c.id) + '" aria-label="Quitar uno">−</button><b>' + c.cantidad + '</b><button class="chip" data-agregar="' + esc(c.id) + '" data-col="' + esc(c.col) + '" aria-label="Agregar uno">+</button></span></div>';
+      return '<div class="fila"><span class="av">' + esc(c.imagen || '•') + '</span><span class="tx"><div class="t1">' + esc(c.nombre) + '</div><div class="t2">' + dinero(c.precio) + ' c/u</div></span><span class="der cant"><button class="chip" data-menos="' + esc(c.id) + '" aria-label="Quitar uno">−</button><b>' + c.cantidad + '</b><button class="chip" data-agregar="' + esc(c.id) + '" data-col="' + esc(c.col) + '" aria-label="Agregar uno">+</button></span></div>';
     }).join('') + '<div class="fila"><span class="tx"><div class="t1">Total</div></span><span class="precio">' + dinero(totalCarrito()) + '</span></div></div>';
     return h + formulario(Object.assign({}, b, { titulo: '' }), {}, true) + '</section>';
   };
@@ -456,10 +459,10 @@ nav.tabs .ic{width:52px;height:30px;border-radius:15px;display:grid;place-items:
     var q = encodeURIComponent(b.direccion || '');
     return '<section>' + cabeza(b) + '<div class="mapa"><div class="plano" role="img" aria-label="Mapa de ' + esc(b.direccion) + '"><span class="verde"></span><span class="pulso"></span><span class="pin"><svg viewBox="0 0 24 24"><path d="' + IC.ubicacion.split('M12 11.5')[0] + '"/><circle cx="12" cy="9" r="2.6" fill="#fff" stroke="none"/></svg></span></div><div class="info"><b>' + esc(b.lugar || b.direccion) + '</b>' + (b.lugar ? '<span>' + esc(b.direccion) + '</span>' : '') + (b.horario ? '<span>' + icono('reloj') + ' ' + esc(b.horario) + '</span>' : '') + (b.texto ? '<span>' + esc(b.texto) + '</span>' : '') + '<a class="boton" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">' + icono('ubicacion') + ' Cómo llegar</a></div></div></section>';
   };
-  R.barras = function (b) {
+  R.barras = function (b, ctx) {
     var items = b.items;
     if (!items && b.coleccion) {
-      var g = {}; col(b.coleccion).forEach(function (x) { var k = x[b.agrupar] || 'Otros'; g[k] = (g[k] || 0) + (b.sumar ? Number(x[b.sumar]) || 0 : 1); });
+      var g = {}; filtrarDonde(col(b.coleccion), b.donde, ctx).forEach(function (x) { var k = x[b.agrupar] || 'Otros'; g[k] = (g[k] || 0) + (b.sumar ? Number(x[b.sumar]) || 0 : 1); });
       items = Object.keys(g).map(function (k) { return { etiqueta: k, valor: g[k] }; }).sort(function (a, c) { return c.valor - a.valor; });
     }
     items = items || [];

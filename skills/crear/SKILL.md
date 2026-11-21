@@ -8,6 +8,7 @@ allowed-tools: Bash(node:*), Read, Write, Edit
 # VozApp · crear
 
 Entrada: `$ARGUMENTS` — ruta a un audio o .txt, y opcionalmente `--sin-deploy`. Si no hay ruta, pedila en una línea y pará.
+Si la entrada es `ejemplo` o `ejemplo <rubro>` (veterinaria, barberia, foodtruck; por defecto barberia), usá `${CLAUDE_PLUGIN_ROOT}/examples/audios/<rubro>.ogg`; si no hay clave de transcripción, `${CLAUDE_PLUGIN_ROOT}/examples/textos/<rubro>.txt`.
 
 **Objetivo: todo en menos de 5 minutos.** No pidas confirmaciones. No expliques lo que vas a hacer. Una línea de avance por paso ("1/4 Transcribiendo…"). Hacé en paralelo todo lo que se pueda dentro de un mismo mensaje.
 

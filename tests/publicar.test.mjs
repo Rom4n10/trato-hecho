@@ -35,6 +35,7 @@ test('motivoFallo traduce errores comunes', () => {
 test('elegirIp prefiere la red local de casa', () => {
   const ifaces = {
     'vEthernet (WSL)': [{ family: 'IPv4', address: '172.28.0.1', internal: false }],
+    'Ethernet 2': [{ family: 'IPv4', address: '192.168.56.1', internal: false }],
     'Wi-Fi': [{ family: 'IPv6', address: 'fe80::1', internal: false }, { family: 'IPv4', address: '192.168.0.15', internal: false }],
     lo: [{ family: 'IPv4', address: '127.0.0.1', internal: true }],
   };
@@ -84,5 +85,12 @@ test('CLI publicar --sin-deploy: arma todo y deja links, mensaje y QR', async ()
   assert.match(readFileSync(join(dir, 'mensaje-whatsapp.txt'), 'utf8'), /propuesta\//);
   const res = await fetch(links.local + 'propuesta/');
   assert.equal(res.status, 200);
-  process.kill(links.pidServidor);
+
+  // Segunda corrida: reemplaza el servidor anterior en vez de dejarlo vivo.
+  const r2 = spawnSync(process.execPath, [join(RAIZ, 'scripts/publicar.mjs'), dir, '--sin-deploy'], { encoding: 'utf8', env, timeout: 20000 });
+  assert.equal(r2.status, 0, r2.stderr + r2.stdout);
+  const links2 = JSON.parse(readFileSync(join(dir, 'links.json'), 'utf8'));
+  assert.notEqual(links2.pidServidor, links.pidServidor);
+  assert.throws(() => process.kill(links.pidServidor, 0), 'el servidor anterior sigue vivo');
+  process.kill(links2.pidServidor);
 });

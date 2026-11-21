@@ -4,16 +4,17 @@ Plugin de Claude Code que convierte el audio de WhatsApp de un cliente en: brief
 
 ## Estructura
 - `.claude-plugin/plugin.json` — manifiesto. `.claude-plugin/marketplace.json` — el repo es su propio marketplace.
-- `skills/crear/` — skill principal (`/vozapp:crear <audio>`). `references/` reglas y plantillas de texto, `templates/` HTML base.
+- `skills/crear/` — skill principal (`/vozapp:crear <audio>`). `references/` reglas (brief, cotización, diseño), `tabla-horas.json`, `app-ejemplo.json`; `templates/` motor del prototipo (`app-base.html`) y propuesta.
 - `skills/setup/` — configuración guiada (`/vozapp:setup`).
-- `scripts/` — Node 20 ESM (`.mjs`). Desde los skills se llaman con `node "${CLAUDE_PLUGIN_ROOT}/scripts/<x>.mjs"`.
-- `examples/audios/` — audios de prueba. `vozapp-out/` — salidas (en .gitignore).
+- `scripts/` — Node 20 ESM (`.mjs`), sin dependencias. Desde los skills se llaman con `node "${CLAUDE_PLUGIN_ROOT}/scripts/<x>.mjs"`.
+  - `transcribe` → `quote` (cuentas) → `publicar` (= `build-prototype` + `render-proposal` + `deploy` + `qr` + mensaje).
+- `tests/` — `npm test` (node:test). `examples/audios/` y `examples/textos/` — casos de prueba. `vozapp-out/` — salidas (en .gitignore).
 
 ## Reglas
 - Todo lo que ve el usuario final (mensajes, README, propuesta, prototipo) va en **español neutro latinoamericano**.
 - Scripts **sin dependencias** salvo justificación fuerte. Usar `fetch`, `FormData` y `Blob` nativos de Node 20.
 - **El modelo nunca hace aritmética de la cotización**: propone horas; `scripts/quote.mjs` calcula totales.
-- Los prototipos son **un solo HTML** (Tailwind por CDN + JS vanilla), mobile-first, con datos de ejemplo realistas. Sin backend.
+- Los prototipos son **un solo HTML**: el modelo escribe `app.json` y `build-prototype.mjs` lo inyecta en el motor `templates/app-base.html` (CSS propio + JS vanilla), mobile-first, con datos de ejemplo realistas. Sin backend. Para una capacidad nueva del prototipo, agregá un bloque al motor y documentalo en `references/design-rules.md`.
 - Nunca imprimir ni commitear claves. Config en `~/.vozapp/config.json` o variables de entorno.
 - Errores siempre con mensaje claro en español y cómo arreglarlo.
 - Objetivo de rendimiento: flujo completo < 5 minutos.
