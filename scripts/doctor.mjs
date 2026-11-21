@@ -4,7 +4,9 @@
 // Sale con código 1 si falta algo crítico.
 import { spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import { loadConfig, mask, configPath } from './config.mjs';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { loadConfig, mask, configPath, configDir } from './config.mjs';
 
 const WIN = process.platform === 'win32';
 
@@ -72,6 +74,11 @@ export function formatear(items, { rapido = false } = {}) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const rapido = process.argv.includes('--quiet');
   try {
+    // --inicio: marca el comienzo de /trato:crear para que publicar.mjs informe el tiempo total real.
+    if (process.argv.includes('--inicio')) {
+      mkdirSync(configDir(), { recursive: true });
+      writeFileSync(join(configDir(), 'inicio.json'), JSON.stringify({ ts: Date.now() }));
+    }
     const items = revisar(loadConfig(), { rapido });
     console.log(formatear(items, { rapido }));
     process.exit(items.some((i) => i.nivel === 'error') ? 1 : 0);

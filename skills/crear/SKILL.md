@@ -15,7 +15,7 @@ Si la entrada es `ejemplo` o `ejemplo <rubro>` (veterinaria, barberia, foodtruck
 Scripts en `${CLAUDE_PLUGIN_ROOT}/scripts/`, referencias en `${CLAUDE_PLUGIN_ROOT}/skills/crear/references/`. Si `${CLAUDE_PLUGIN_ROOT}` no está definida, la raíz del plugin es la carpeta dos niveles arriba del directorio de este skill.
 
 ## 1/4 · Escuchar (un solo mensaje, en paralelo)
-- Bash: `node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" --quiet && node "${CLAUDE_PLUGIN_ROOT}/scripts/transcribe.mjs" "<audio>"`
+- Bash: `node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" --quiet --inicio && node "${CLAUDE_PLUGIN_ROOT}/scripts/transcribe.mjs" "<audio>"`
 - Read (las 4 en paralelo): `${CLAUDE_PLUGIN_ROOT}/skills/crear/references/` → `brief.md`, `quote-rules.md`, `design-rules.md`, `app-ejemplo.json`
 
 Si doctor falla: mostrá qué falta, sugerí `/trato:setup` y pará. Si la transcripción falla, mostrá el error tal cual y pará. Anotá los segundos de audio que informa (stderr).
@@ -38,7 +38,7 @@ Si reporta errores de `app.json`, corregí con Edit solo eso y repetí.
 Respondé solo esto, sin preámbulo:
 - **Prototipo:** link · **Propuesta:** link
 - **Recomendada:** precio · semanas (tal cual lo imprimió el script)
-- Tiempo total
+- **Tiempo total:** el que imprimió `publicar.mjs` (⏱). No lo estimes vos: si no aparece, omitilo.
 - Las preguntas abiertas más importantes (máx. 3, una línea cada una)
 - El mensaje de `mensaje-whatsapp.txt` en un bloque de código, listo para copiar.
 - Una línea: "El QR está arriba en la salida de publicar y en `trato-out/<slug>/qr.svg`."

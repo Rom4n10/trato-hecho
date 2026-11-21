@@ -4,7 +4,7 @@
 import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join, basename, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { loadConfig } from './config.mjs';
+import { loadConfig, configDir } from './config.mjs';
 import { construirCarpeta } from './build-prototype.mjs';
 import { renderCarpeta } from './render-proposal.mjs';
 import { deployVercel, previewLocal } from './deploy.mjs';
@@ -26,6 +26,22 @@ export function mensajeWhatsApp(cfg, cot, links) {
     'Miralo con calma y, si te cierra, tocá "Acepto" en la opción que prefieras. Cualquier duda, mandame un audio 🙂',
   ];
   return lineas.join('\n');
+}
+
+export function duracionTexto(seg) {
+  const s = Math.round(seg);
+  return s < 60 ? `${s} s` : `${Math.floor(s / 60)} min ${s % 60} s`;
+}
+
+// Segundos desde que /trato:crear arrancó (marca de doctor.mjs --inicio), si es de esta corrida.
+function segundosDesdeInicio() {
+  try {
+    const { ts } = JSON.parse(readFileSync(join(configDir(), 'inicio.json'), 'utf8'));
+    const seg = (Date.now() - ts) / 1000;
+    return seg > 0 && seg < 30 * 60 ? seg : null;
+  } catch {
+    return null;
+  }
 }
 
 // Si una corrida anterior dejó un preview local para esta carpeta, lo cierra antes de abrir otro.
@@ -70,7 +86,8 @@ async function main(argv) {
     extra = { local: l.local, pidServidor: l.pid };
   }
 
-  const links = { prototipo: base, propuesta: base + 'propuesta/', modo, fecha: new Date().toISOString(), ...extra };
+  const total = segundosDesdeInicio();
+  const links = { prototipo: base, propuesta: base + 'propuesta/', modo, fecha: new Date().toISOString(), ...(total ? { segundosTotales: Math.round(total) } : {}), ...extra };
   writeFileSync(join(dir, 'links.json'), JSON.stringify(links, null, 2) + '\n');
   const mensaje = mensajeWhatsApp(cfg, cot, links);
   writeFileSync(join(dir, 'mensaje-whatsapp.txt'), mensaje + '\n');
@@ -82,6 +99,7 @@ async function main(argv) {
   console.log(`Prototipo:  ${links.prototipo}`);
   console.log(`Propuesta:  ${links.propuesta}`);
   console.log(`Recomendada: ${rec.precioTexto} · ${rec.semanas} semana${rec.semanas === 1 ? '' : 's'}`);
+  if (total) console.log(`⏱ Tiempo total: ${duracionTexto(total)} (desde el audio hasta los links)`);
   console.log('');
   console.log(qrTerminal(links.prototipo));
   console.log('');

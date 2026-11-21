@@ -8,6 +8,7 @@ Trato Hecho se construyó en un día con Claude Code. Este documento separa lo q
 - **La promesa y el alcance:** un comando, menos de 5 minutos; qué entra en el MVP, qué es stretch y qué queda afuera (login, base de datos, pagos reales).
 - **El plan por fases** (`PLAN.md`) y las reglas del proyecto (`CLAUDE.md`): scripts sin dependencias, español neutro, claves fuera del repo, errores con cómo arreglarlos.
 - **La regla clave de confianza:** el modelo nunca hace la aritmética de la cotización.
+- **El nombre:** Trato Hecho (el proyecto empezó como VozApp).
 - **El stack de servicios:** Groq para transcribir (con OpenAI de respaldo) y Vercel para publicar.
 - **El guion del video y el pitch.**
 
@@ -30,8 +31,13 @@ Trato Hecho se construyó en un día con Claude Code. Este documento separa lo q
 - `deploy.mjs`: publica en Vercel con un nombre de proyecto por cliente y, si falla, levanta un preview en la red local eligiendo la IP correcta (descartó la del adaptador de VirtualBox que había tomado primero).
 - Generador de QR propio sin dependencias, verificado decodificando 5 casos con jsQR en el navegador.
 
+### Prueba real y correcciones
+- Comparó 5 variantes de Whisper para encontrar por qué se perdía una frase del audio: el parámetro `prompt` con el modelo turbo. Lo quitó y agregó un reintento automático.
+- Corrió `/trato:crear` de punta a punta con Claude desde una carpeta vacía: 2 min 7 s, sin errores. Detectó que el modelo inventaba el tiempo total y lo reemplazó por una medición real.
+- Encontró que el preview local bloqueaba la carpeta del usuario en Windows y lo corrigió.
+
 ### Calidad
-- 44 tests con `node:test` escritos antes de cada script (TDD).
+- 48 tests con `node:test` escritos antes de cada script (TDD).
 - Revisión visual en el navegador integrado de los 3 prototipos y la propuesta, en celular y escritorio; arregló bordes de formularios, textos apretados en listas y montos que desbordaban.
 
 ## Decisiones que tomó la IA y se pueden revisar

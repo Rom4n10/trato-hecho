@@ -6,7 +6,7 @@ import { join, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { nombreProyecto, extraerUrls, elegirIp, motivoFallo } from '../scripts/deploy.mjs';
-import { mensajeWhatsApp } from '../scripts/publicar.mjs';
+import { mensajeWhatsApp, duracionTexto } from '../scripts/publicar.mjs';
 import { generarQR } from '../scripts/qr.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -49,6 +49,35 @@ test('mensajeWhatsApp incluye links y resumen', () => {
   assert.match(msg, /https:\/\/a\.vercel\.app\/\n/);
   assert.match(msg, /https:\/\/a\.vercel\.app\/propuesta\//);
   assert.match(msg, /Turnos online/);
+});
+
+test('duracionTexto', () => {
+  assert.equal(duracionTexto(127), '2 min 7 s');
+  assert.equal(duracionTexto(45), '45 s');
+  assert.equal(duracionTexto(180), '3 min 0 s');
+});
+
+test('doctor --inicio marca la hora y publicar informa el tiempo total real', () => {
+  const home = mkdtempSync(join(tmpdir(), 'trato-h-'));
+  const env = { ...process.env, TRATO_HOME: home, GROQ_API_KEY: 'gsk_x', TRATO_TARIFA_HORA: '20' };
+  const d = spawnSync(process.execPath, [join(RAIZ, 'scripts/doctor.mjs'), '--quiet', '--inicio'], { encoding: 'utf8', env });
+  assert.equal(d.status, 0, d.stdout + d.stderr);
+  const marca = JSON.parse(readFileSync(join(home, 'inicio.json'), 'utf8'));
+  assert.ok(Math.abs(marca.ts - Date.now()) < 5000);
+  // Simula que la corrida empezó hace 65 s.
+  writeFileSync(join(home, 'inicio.json'), JSON.stringify({ ts: Date.now() - 65_000 }));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-pub-'));
+  writeFileSync(join(dir, 'app.json'), readFileSync(join(RAIZ, 'skills/crear/references/app-ejemplo.json')));
+  writeFileSync(join(dir, 'cotizacion.json'), JSON.stringify({
+    proyecto: 'P', resumen: 'R.', entendimos: ['a'], preguntas: ['¿a?', '¿b?', '¿c?'],
+    funcionalidades: [{ id: 'a', nombre: 'A', tipo: 'pantalla', complejidad: 'media', opcion: 'esencial' }],
+  }));
+  const r = spawnSync(process.execPath, [join(RAIZ, 'scripts/publicar.mjs'), dir, '--sin-deploy'], { encoding: 'utf8', env, timeout: 20000 });
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  assert.match(r.stdout, /Tiempo total: 1 min \d+ s/);
+  const links = JSON.parse(readFileSync(join(dir, 'links.json'), 'utf8'));
+  assert.ok(links.segundosTotales >= 65);
+  process.kill(links.pidServidor);
 });
 
 test('generarQR: tamaño y patrones de posición', () => {

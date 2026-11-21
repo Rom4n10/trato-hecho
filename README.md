@@ -6,6 +6,18 @@ Plugin de Claude Code para freelancers y agencias chicas de LATAM que venden des
 
 ![Prototipo generado por Trato Hecho para una barbería](docs/img/prototipo-desktop.png)
 
+## Probalo sin instalar nada
+
+Tres ejemplos generados a partir de audios de clientes, publicados tal cual salen:
+
+| Cliente | Prototipo | Propuesta |
+|---|---|---|
+| Veterinaria Patitas | [trato-veterinaria-patitas.vercel.app](https://trato-veterinaria-patitas.vercel.app/) | [propuesta](https://trato-veterinaria-patitas.vercel.app/propuesta/) |
+| Barbería Don Ramiro | [trato-barberia-don-ramiro.vercel.app](https://trato-barberia-don-ramiro.vercel.app/) | [propuesta](https://trato-barberia-don-ramiro.vercel.app/propuesta/) |
+| Food truck El Fogón Rodante | [trato-foodtruck-el-fogon.vercel.app](https://trato-foodtruck-el-fogon.vercel.app/) | [propuesta](https://trato-foodtruck-el-fogon.vercel.app/propuesta/) |
+
+Abrilos desde el celular: así los ve el cliente.
+
 ## El problema
 
 Tu cliente te pide todo por audio de WhatsApp. Pasar de ese audio a una propuesta lleva días: escucharlo, entenderlo, estimar, armar algo para mostrar. Mientras tanto, el cliente se enfría o se va con otro.
@@ -96,7 +108,7 @@ El audio solo viaja al proveedor de transcripción (Groq, u OpenAI si lo configu
 ## Desarrollo
 
 ```
-npm test                         # 44 tests con node:test
+npm test                         # 48 tests con node:test
 node scripts/doctor.mjs          # diagnóstico
 claude --plugin-dir .            # probar el plugin local
 claude plugin validate .
