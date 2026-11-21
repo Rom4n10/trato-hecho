@@ -12,7 +12,7 @@ import { loadConfig } from './config.mjs';
 const ACEPTADOS = new Set(['.flac', '.mp3', '.mp4', '.mpeg', '.mpga', '.m4a', '.ogg', '.wav', '.webm']);
 const TEXTO = new Set(['.txt', '.md']);
 const MAX_BYTES = 24 * 1024 * 1024;
-const PROMPT = 'Audio de WhatsApp de un cliente que pide una aplicación, página web o sistema para su negocio. Español latinoamericano.';
+// Sin "prompt": con whisper-large-v3-turbo hace que se salteen frases enteras al final del audio.
 
 const ALUCINACIONES = [
   /gracias por ver/i,
@@ -82,13 +82,23 @@ function mensajeHttp(prov, status, cuerpo) {
   return `${prov.nombre} respondió ${status}: ${cuerpo.slice(0, 200)}`;
 }
 
+export function camposPedido(prov) {
+  return { model: prov.modelo, response_format: 'verbose_json', temperature: '0' };
+}
+
+// Un segmento de 5 s o más con menos de 1 palabra cada 2 s: el modelo se salteó habla.
+export function hayHuecos(segmentos) {
+  return (segmentos || []).some((s) => {
+    const dur = (s.end ?? 0) - (s.start ?? 0);
+    const palabras = String(s.text || '').trim().split(/\s+/).filter(Boolean).length;
+    return dur >= 5 && palabras / dur < 0.5;
+  });
+}
+
 async function pedir(prov, bytes, nombre) {
   const form = new FormData();
   form.append('file', new Blob([bytes]), nombre);
-  form.append('model', prov.modelo);
-  form.append('response_format', 'verbose_json');
-  form.append('prompt', PROMPT);
-  form.append('temperature', '0');
+  for (const [k, v] of Object.entries(camposPedido(prov))) form.append(k, v);
   let res;
   try {
     res = await fetch(prov.url, {
@@ -105,7 +115,7 @@ async function pedir(prov, bytes, nombre) {
   if (!res.ok) throw new Error(mensajeHttp(prov, res.status, cuerpo));
   let datos;
   try { datos = JSON.parse(cuerpo); } catch { datos = { text: cuerpo }; }
-  return { texto: (datos.text || '').trim(), idioma: datos.language || '', duracion: datos.duration || null };
+  return { texto: (datos.text || '').trim(), idioma: datos.language || '', duracion: datos.duration || null, segmentos: datos.segments || [] };
 }
 
 export async function transcribir(ruta, { env = process.env, log = () => {} } = {}) {
@@ -139,7 +149,15 @@ export async function transcribir(ruta, { env = process.env, log = () => {} } = 
     let ultimoError;
     for (const prov of lista) {
       try {
-        const r = await pedir(prov, bytes, plan.nombre);
+        let r = await pedir(prov, bytes, plan.nombre);
+        if (prov.id === 'groq' && hayHuecos(r.segmentos)) {
+          log('· Parece que se salteó una parte del audio. Reintentando con whisper-large-v3…');
+          try {
+            const r2 = await pedir({ ...prov, modelo: 'whisper-large-v3' }, bytes, plan.nombre);
+            if (r2.texto.length > r.texto.length) r = r2;
+          } catch { /* nos quedamos con la primera */ }
+        }
+        delete r.segmentos;
         if (pareceVacio(r.texto)) {
           throw Object.assign(new Error('No se entendió nada en el audio: parece vacío, sin voz o con mucho ruido. Pedile al cliente que lo grabe de nuevo o pasá un .txt con lo que pidió.'), { definitivo: true });
         }
