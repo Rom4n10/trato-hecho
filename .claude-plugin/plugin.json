@@ -1,6 +1,6 @@
 {
   "name": "trato",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Del audio de WhatsApp del cliente a brief, cotización con 3 opciones, prototipo publicado y propuesta lista para enviar, en 5 minutos.",
   "author": {
     "name": "Rom4n10",
@@ -9,5 +9,14 @@
   "homepage": "https://github.com/Rom4n10/trato-hecho",
   "repository": "https://github.com/Rom4n10/trato-hecho",
   "license": "MIT",
-  "keywords": ["freelance", "propuestas", "cotizacion", "prototipo", "whatsapp", "latam", "audio", "transcripcion"]
+  "keywords": [
+    "freelance",
+    "propuestas",
+    "cotizacion",
+    "prototipo",
+    "whatsapp",
+    "latam",
+    "audio",
+    "transcripcion"
+  ]
 }

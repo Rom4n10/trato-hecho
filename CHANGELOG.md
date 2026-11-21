@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 — 2026-11-21
+
+- `/trato:crear` informa el tiempo total real (antes el modelo lo estimaba).
+- La transcripción ya no saltea frases al final del audio.
+- El preview local no bloquea la carpeta del usuario en Windows.
+
 ## 0.1.0 — 2026-11-21
 
 Primera versión (Dojo AI Hack, Track 01). El proyecto arrancó como "VozApp" y se renombró a Trato Hecho.
