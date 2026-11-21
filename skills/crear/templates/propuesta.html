@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Propuesta · {{PROYECTO}}</title>
+<meta name="description" content="{{RESUMEN}}">
+<meta property="og:title" content="Propuesta: {{PROYECTO}}">
+<meta property="og:description" content="{{RESUMEN}}">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="{{COLOR}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+:root{--fondo:#F5F6F2;--papel:#FFFFFF;--tinta:#191C1A;--gris:#5E655F;--linea:#E1E4DE;--acento:{{COLOR}};--acento-osc:{{COLOR_OSCURO}};--acento-cla:{{COLOR_CLARO}};--wa:#0F7A41;--wa-osc:#0B5E32;--fd:"Bricolage Grotesque",system-ui,sans-serif;--fb:"Figtree",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--fondo);color:var(--tinta);font-family:var(--fb);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--acento);outline-offset:3px;border-radius:6px}
+.hoja{max-width:680px;margin:0 auto;padding:40px 20px 140px}
+.de{color:var(--gris);font-size:15px}
+h1{font-family:var(--fd);font-weight:800;font-size:clamp(40px,11vw,64px);line-height:.98;letter-spacing:-.03em;margin:10px 0 12px;font-variation-settings:"opsz" 96}
+.fecha{color:var(--gris);font-size:15px}
+h2{font-family:var(--fd);font-weight:700;font-size:26px;line-height:1.15;letter-spacing:-.015em;margin-bottom:14px}
+section{margin-top:48px}
+.audio{margin-top:36px}
+.burbuja{display:flex;align-items:center;gap:12px;background:var(--papel);border:1px solid var(--linea);border-radius:22px 22px 22px 6px;padding:12px 16px 12px 12px;max-width:420px;box-shadow:0 1px 0 var(--linea)}
+.play{width:40px;height:40px;border-radius:50%;background:var(--acento);display:grid;place-items:center;flex:none}
+.play svg{width:16px;height:16px;fill:#fff;margin-left:3px}
+.onda{display:flex;align-items:center;gap:2.5px;height:36px;flex:1;min-width:0;overflow:hidden}
+.onda i{display:block;width:3px;border-radius:2px;background:var(--acento);flex:none;opacity:.9}
+.onda i:nth-child(n+26){opacity:.35}
+.dur{font-size:13px;color:var(--gris);font-variant-numeric:tabular-nums}
+blockquote{font-family:var(--fd);font-weight:500;font-size:clamp(21px,5vw,25px);line-height:1.35;letter-spacing:-.01em;margin-top:18px;max-width:34ch}
+.entendimos{list-style:none;display:grid;gap:10px}
+.entendimos li{padding-left:28px;position:relative}
+.entendimos li:before{content:"";position:absolute;left:2px;top:.55em;width:14px;height:8px;border-left:2.5px solid var(--acento-osc);border-bottom:2.5px solid var(--acento-osc);transform:rotate(-45deg)}
+.proto{display:flex;gap:20px;align-items:center;margin-top:48px;background:var(--acento-cla);border-radius:24px;padding:22px;text-decoration:none;transition:transform .15s}
+.proto:hover{transform:translateY(-2px)}
+.mini{width:92px;height:168px;border-radius:20px;background:var(--papel);border:5px solid var(--tinta);flex:none;overflow:hidden;display:flex;flex-direction:column}
+.mini .top{background:var(--acento);height:62px;display:grid;place-items:center;font-size:30px}
+.mini .lin{height:9px;border-radius:5px;background:var(--linea);margin:8px 9px 0}
+.mini .lin.c{width:55%}
+.proto h2{margin-bottom:6px}
+.proto p{color:var(--gris);font-size:16px}
+.boton{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;background:var(--tinta);color:#fff;font-weight:700;border-radius:999px;padding:12px 20px;text-decoration:none;line-height:1.1}
+.nota-precios{color:var(--gris);margin:-6px 0 18px;font-size:16px}
+.opciones{display:grid;gap:14px}
+.opcion{background:var(--papel);border:1px solid var(--linea);border-radius:20px;padding:22px}
+.opcion.destacada{border:2px solid var(--acento);box-shadow:0 18px 40px -24px var(--acento-osc)}
+.opcion header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.opcion h3{font-family:var(--fd);font-weight:700;font-size:21px}
+.sello{background:var(--acento-cla);color:var(--acento-osc);font-weight:700;font-size:13px;border-radius:999px;padding:4px 11px}
+.opcion .desc{color:var(--gris);font-size:15px;margin-top:2px}
+.monto{font-family:var(--fd);font-weight:800;font-size:clamp(34px,9vw,42px);line-height:1.05;letter-spacing:-.02em;margin-top:14px;font-variant-numeric:tabular-nums}
+.plazo{color:var(--gris);font-size:15px;margin-top:4px}
+.incluye{list-style:none;margin-top:16px;padding-top:14px;border-top:1px solid var(--linea);display:grid;gap:7px;font-size:16px}
+.incluye li{padding-left:22px;position:relative}
+.incluye li:before{content:"+";position:absolute;left:2px;font-weight:700;color:var(--acento-osc)}
+.incluye li.base{color:var(--gris);padding-left:0}
+.incluye li.base:before{content:none}
+.incluye small{display:block;color:var(--gris);font-size:14px;line-height:1.4}
+.acepto{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;background:var(--papel);color:var(--wa-osc);border:2px solid var(--wa);border-radius:14px;padding:13px 16px;font-weight:700;text-decoration:none;text-align:center}
+.destacada .acepto{background:var(--wa);color:#fff;border-color:var(--wa)}
+.acepto svg{width:20px;height:20px;fill:currentColor;flex:none}
+.preguntas{padding-left:24px;display:grid;gap:10px}
+.preguntas li::marker{font-family:var(--fd);font-weight:700;color:var(--acento-osc)}
+.preguntas-nota{color:var(--gris);font-size:15px;margin-top:14px}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--linea);color:var(--gris);font-size:15px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+footer b{color:var(--tinta)}
+.fija{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--linea);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.fija span{font-size:14px;color:var(--gris);line-height:1.25}
+.fija b{display:block;color:var(--tinta);font-family:var(--fd);font-size:19px}
+.fija .acepto{margin:0;padding:12px 16px;background:var(--wa);color:#fff;border-color:var(--wa);white-space:nowrap}
+@media (min-width:760px){
+  .hoja{padding-top:72px;padding-bottom:80px}
+  .fija{display:none}
+  .opciones{grid-template-columns:repeat(3,1fr);align-items:start;margin:0 -110px}
+  .opcion.destacada{transform:translateY(-10px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.fija{display:none}.hoja{padding-bottom:20px}}
+</style>
+</head>
+<body>
+<main class="hoja">
+  <header>
+    <p class="de">{{ENCABEZADO}}</p>
+    <h1>{{PROYECTO}}</h1>
+    <p class="fecha">{{FECHA}} · Válida hasta el {{VALIDA_HASTA}}</p>
+  </header>
+
+  <section class="audio" aria-label="Lo que nos contaste en tu audio">
+    <div class="burbuja" aria-hidden="true">
+      <span class="play"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg></span>
+      <span class="onda">{{ONDA}}</span>
+      <span class="dur">{{DURACION}}</span>
+    </div>
+    <blockquote>{{RESUMEN}}</blockquote>
+  </section>
+
+  <section>
+    <h2>Lo que entendimos</h2>
+    <ul class="entendimos">{{ENTENDIMOS}}</ul>
+  </section>
+
+  <a class="proto" href="../">
+    <span class="mini" aria-hidden="true"><span class="top">{{APP_LOGO}}</span><span class="lin"></span><span class="lin c"></span><span class="lin"></span><span class="lin c"></span></span>
+    <span>
+      <h2>Probalo en tu celular</h2>
+      <p>Un prototipo de {{APP_NOMBRE}} con datos de ejemplo. Tocá todo: no se rompe nada.</p>
+      <span class="boton">Abrir el prototipo</span>
+    </span>
+  </a>
+
+  <section id="opciones">
+    <h2>Elegí cómo arrancar</h2>
+    <p class="nota-precios">Precios finales en {{MONEDA}}: incluyen diseño, pruebas y publicación.</p>
+    <div class="opciones">{{OPCIONES}}</div>
+  </section>
+
+  <section>
+    <h2>Antes de empezar, necesito saber</h2>
+    <ol class="preguntas">{{PREGUNTAS}}</ol>
+    <p class="preguntas-nota">Podés responderme por audio, como te quede más cómodo.</p>
+  </section>
+
+  <footer>
+    <span><b>{{FREELANCER}}</b>{{CONTACTO}}</span>
+    <span>Propuesta hecha con VozApp</span>
+  </footer>
+</main>
+
+<div class="fija">
+  <span>{{FIJA_NOMBRE}}<b>{{FIJA_PRECIO}}</b></span>
+  <a class="acepto" href="{{FIJA_LINK}}" target="_blank" rel="noopener">{{ICONO_WA}}Acepto</a>
+</div>
+</body>
+</html>

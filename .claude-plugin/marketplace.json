@@ -1,0 +1,17 @@
+{
+  "name": "vozapp",
+  "description": "VozApp: herramientas para freelancers y agencias de LATAM que venden desarrollo de software.",
+  "owner": {
+    "name": "Rom4n10",
+    "url": "https://github.com/Rom4n10"
+  },
+  "plugins": [
+    {
+      "name": "vozapp",
+      "source": "./",
+      "description": "Del audio de WhatsApp del cliente a brief, cotización, prototipo publicado y propuesta lista para enviar, en 5 minutos.",
+      "version": "0.1.0",
+      "category": "productivity"
+    }
+  ]
+}

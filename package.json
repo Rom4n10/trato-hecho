@@ -1,0 +1,15 @@
+{
+  "name": "vozapp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plugin de Claude Code: del audio de WhatsApp del cliente a la propuesta aceptada.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\"",
+    "doctor": "node scripts/doctor.mjs"
+  },
+  "license": "MIT"
+}

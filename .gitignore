@@ -1,0 +1,6 @@
+node_modules/
+vozapp-out/
+.env
+.vercel/
+.DS_Store
+.superpowers/

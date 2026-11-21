@@ -1,0 +1,33 @@
+{
+  "horasSemana": 30,
+  "complejidad": {
+    "baja": 0.7,
+    "media": 1,
+    "alta": 1.5
+  },
+  "tipos": {
+    "pantalla": { "nombre": "Pantalla simple o informativa", "horas": 4, "ejemplos": "inicio, sobre nosotros, contacto, preguntas frecuentes" },
+    "formulario": { "nombre": "Formulario con validaciones", "horas": 6, "ejemplos": "alta de mascota, pedido de presupuesto, registro de cliente" },
+    "listado": { "nombre": "Listado con búsqueda y filtros", "horas": 8, "ejemplos": "listado de turnos, clientes, productos" },
+    "detalle": { "nombre": "Vista de detalle o ficha", "horas": 4, "ejemplos": "ficha de la mascota, detalle del pedido" },
+    "catalogo": { "nombre": "Catálogo o menú con carrito", "horas": 12, "ejemplos": "menú del día, tienda simple, servicios con precio para elegir" },
+    "reservas": { "nombre": "Agenda y reservas con disponibilidad", "horas": 16, "ejemplos": "turnos por profesional, horarios libres, reprogramar" },
+    "login": { "nombre": "Registro e inicio de sesión", "horas": 10, "ejemplos": "cuenta de cliente, recuperar contraseña, ingreso con Google" },
+    "roles": { "nombre": "Roles y permisos", "horas": 8, "ejemplos": "dueño, empleado y cliente ven cosas distintas" },
+    "pagos": { "nombre": "Pagos en línea", "horas": 16, "ejemplos": "Mercado Pago, Stripe, seña o pago adelantado" },
+    "notificaciones": { "nombre": "Notificaciones y recordatorios", "horas": 10, "ejemplos": "recordatorio por WhatsApp o email, aviso de turno, push" },
+    "panel-admin": { "nombre": "Panel de administración", "horas": 16, "ejemplos": "el dueño carga, edita y borra datos del negocio" },
+    "reportes": { "nombre": "Reportes y estadísticas", "horas": 10, "ejemplos": "facturación por mes, ventas por empleado, gráficos" },
+    "integracion": { "nombre": "Integración con un sistema externo", "horas": 12, "ejemplos": "API de facturación, Google Calendar, sistema de stock existente" },
+    "mapa": { "nombre": "Mapa o ubicación", "horas": 6, "ejemplos": "dónde estoy hoy, cómo llegar, zona de envío" },
+    "archivos": { "nombre": "Carga de imágenes o archivos", "horas": 6, "ejemplos": "foto de la mascota, adjuntar estudios, logo" },
+    "lista-espera": { "nombre": "Lista de espera con aviso automático", "horas": 10, "ejemplos": "se libera un turno y se avisa al primero de la lista" },
+    "chat": { "nombre": "Chat o mensajería interna", "horas": 16, "ejemplos": "chat entre cliente y negocio dentro de la app" }
+  },
+  "fijos": [
+    { "id": "base", "nombre": "Configuración del proyecto, diseño base y publicación", "horas": 10 }
+  ],
+  "porcentajes": [
+    { "id": "qa", "nombre": "Pruebas, ajustes y acompañamiento", "porcentaje": 15 }
+  ]
+}
