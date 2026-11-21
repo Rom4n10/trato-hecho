@@ -223,7 +223,7 @@ nav.tabs .ic{width:52px;height:30px;border-radius:15px;display:grid;place-items:
 
   // ---------- Datos (localStorage) ----------
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; } return (h >>> 0).toString(36); }
-  var KEY = 'vozapp:' + (A.id || A.nombre) + ':' + hash(JSON.stringify(A.colecciones || {}) + JSON.stringify(A.pantallas));
+  var KEY = 'trato:' + (A.id || A.nombre) + ':' + hash(JSON.stringify(A.colecciones || {}) + JSON.stringify(A.pantallas));
   var db;
   try { db = JSON.parse(localStorage.getItem(KEY)); } catch (e) { db = null; }
   if (!db) db = JSON.parse(JSON.stringify(A.colecciones || {}));
@@ -581,12 +581,12 @@ nav.tabs .ic{width:52px;height:30px;border-radius:15px;display:grid;place-items:
 
   // ---------- Escena ----------
   var lat = document.getElementById('lateral');
-  lat.innerHTML = '<div class="marca">' + esc(A.nombre) + '</div><p>' + esc(A.descripcion || 'Prototipo navegable.') + '</p><p>Tocá todo: lo que cargues queda guardado en este navegador.</p>' + (A.sinPropuesta ? '' : '<a class="boton" href="propuesta/">Ver la propuesta</a>') + '<small>Datos de ejemplo · hecho con VozApp</small>';
+  lat.innerHTML = '<div class="marca">' + esc(A.nombre) + '</div><p>' + esc(A.descripcion || 'Prototipo navegable.') + '</p><p>Tocá todo: lo que cargues queda guardado en este navegador.</p>' + (A.sinPropuesta ? '' : '<a class="boton" href="propuesta/">Ver la propuesta</a>') + '<small>Datos de ejemplo · creado con Trato Hecho</small>';
   var franja = document.getElementById('franja');
-  try { if (sessionStorage.getItem('vozapp-franja') === '0') franja.classList.add('oculta'); } catch (e) {}
+  try { if (sessionStorage.getItem('trato-franja') === '0') franja.classList.add('oculta'); } catch (e) {}
   if (A.sinPropuesta) franja.classList.add('oculta');
   function marcarFranja() { document.getElementById('telefono').classList.toggle('con-franja', !franja.classList.contains('oculta')); }
-  document.getElementById('cerrar-franja').addEventListener('click', function () { franja.classList.add('oculta'); try { sessionStorage.setItem('vozapp-franja', '0'); } catch (e) {} marcarFranja(); });
+  document.getElementById('cerrar-franja').addEventListener('click', function () { franja.classList.add('oculta'); try { sessionStorage.setItem('trato-franja', '0'); } catch (e) {} marcarFranja(); });
   marcarFranja();
   window.addEventListener('hashchange', render);
   render();

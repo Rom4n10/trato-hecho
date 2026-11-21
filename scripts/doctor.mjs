@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Diagnóstico de VozApp: imprime un checklist ✅/⚠️/❌ con cómo arreglar cada problema.
-// Uso: node doctor.mjs [--quiet]   (--quiet: solo problemas críticos; rápido, para /vozapp:crear)
+// Diagnóstico de Trato Hecho: imprime un checklist ✅/⚠️/❌ con cómo arreglar cada problema.
+// Uso: node doctor.mjs [--quiet]   (--quiet: solo problemas críticos; rápido, para /trato:crear)
 // Sale con código 1 si falta algo crítico.
 import { spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
@@ -19,14 +19,14 @@ export function revisar(cfg, { rapido = false } = {}) {
 
   const mayor = Number(process.versions.node.split('.')[0]);
   if (mayor >= 20) add('ok', `Node ${process.versions.node}`);
-  else add('error', `Node ${process.versions.node}`, 'VozApp necesita Node 20 o más nuevo.', 'Instalá Node 20+ desde nodejs.org.');
+  else add('error', `Node ${process.versions.node}`, 'Trato Hecho necesita Node 20 o más nuevo.', 'Instalá Node 20+ desde nodejs.org.');
 
   if (cfg.GROQ_API_KEY) add('ok', 'Transcripción: Groq', mask(cfg.GROQ_API_KEY) + (cfg.OPENAI_API_KEY ? ' · OpenAI de respaldo' : ''));
   else if (cfg.OPENAI_API_KEY) add('ok', 'Transcripción: OpenAI', mask(cfg.OPENAI_API_KEY));
-  else add('error', 'Transcripción', 'Falta GROQ_API_KEY (u OPENAI_API_KEY).', 'Creá una clave gratis en console.groq.com → API Keys y corré /vozapp:setup. Mientras tanto podés pasar un .txt con lo que pidió el cliente.');
+  else add('error', 'Transcripción', 'Falta GROQ_API_KEY (u OPENAI_API_KEY).', 'Creá una clave gratis en console.groq.com → API Keys y corré /trato:setup. Mientras tanto podés pasar un .txt con lo que pidió el cliente.');
 
   if (cfg.tarifaHora) add('ok', `Tarifa: ${cfg.moneda} ${cfg.tarifaHora}/h`);
-  else add('error', 'Tarifa por hora', 'Sin tarifa no se puede cotizar.', 'Corré /vozapp:setup o: node scripts/config.mjs set tarifaHora=30 moneda=USD');
+  else add('error', 'Tarifa por hora', 'Sin tarifa no se puede cotizar.', 'Corré /trato:setup o: node scripts/config.mjs set tarifaHora=30 moneda=USD');
 
   if (cfg.nombre) add('ok', `Firma: ${cfg.nombre}`);
   else add('aviso', 'Nombre', 'Las propuestas saldrán sin firma.', 'node scripts/config.mjs set nombre="Tu Nombre"');
@@ -46,7 +46,7 @@ export function revisar(cfg, { rapido = false } = {}) {
     const who = correr('npx', ['--yes', 'vercel', 'whoami'], 60_000);
     const usuario = who.ok ? who.stdout.split('\n').map((l) => l.trim()).filter((l) => /^[\w.-]+$/.test(l)).pop() : '';
     if (who.ok && usuario) add('ok', `Vercel: sesión de ${usuario}`, 'Se usa el login del CLI de Vercel.');
-    else add('aviso', 'Vercel', 'Sin token ni sesión: los links serán locales (preview en tu red).', 'Creá un token en vercel.com → Settings → Tokens y corré /vozapp:setup, o ejecutá: npx vercel login');
+    else add('aviso', 'Vercel', 'Sin token ni sesión: los links serán locales (preview en tu red).', 'Creá un token en vercel.com → Settings → Tokens y corré /trato:setup, o ejecutá: npx vercel login');
   }
   return items;
 }
@@ -59,13 +59,13 @@ export function formatear(items, { rapido = false } = {}) {
     if (!errores.length) return '✅ Config OK';
     return errores.map((i) => `❌ ${i.titulo}: ${i.detalle}\n   → ${i.arreglo}`).join('\n');
   }
-  const lineas = ['VozApp · diagnóstico', `Config: ${configPath()}`, ''];
+  const lineas = ['Trato Hecho · diagnóstico', `Config: ${configPath()}`, ''];
   for (const i of items) {
     lineas.push(`${ICONO[i.nivel]} ${i.titulo}${i.detalle ? ` — ${i.detalle}` : ''}`);
     if (i.nivel !== 'ok' && i.arreglo) lineas.push(`   → ${i.arreglo}`);
   }
   lineas.push('');
-  lineas.push(errores.length ? `Faltan ${errores.length} cosa(s) crítica(s). Corré /vozapp:setup.` : 'Todo listo. Probalo con /vozapp:crear <audio>.');
+  lineas.push(errores.length ? `Faltan ${errores.length} cosa(s) crítica(s). Corré /trato:setup.` : 'Todo listo. Probalo con /trato:crear <audio>.');
   return lineas.join('\n');
 }
 

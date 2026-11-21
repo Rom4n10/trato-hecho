@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Paso final de /vozapp:crear: arma prototipo + propuesta, publica, genera QR y el mensaje de WhatsApp.
+// Paso final de /trato:crear: arma prototipo + propuesta, publica, genera QR y el mensaje de WhatsApp.
 // Uso: node publicar.mjs <carpeta> [--sin-deploy]
 import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join, basename, resolve } from 'node:path';

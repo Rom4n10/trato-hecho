@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Publica <carpeta>/site en Vercel (proyecto vozapp-<slug>) o, si no se puede, levanta un preview local en la red.
+// Publica <carpeta>/site en Vercel (proyecto trato-<slug>) o, si no se puede, levanta un preview local en la red.
 // Uso: node deploy.mjs <carpeta> [--sin-deploy]   (normalmente lo llama publicar.mjs)
 import { spawn } from 'node:child_process';
 import { cpSync, mkdirSync, readdirSync, rmSync, existsSync } from 'node:fs';
@@ -16,7 +16,7 @@ export function nombreProyecto(slug) {
   const limpio = String(slug)
     .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-  return ('vozapp-' + limpio.replace(/^vozapp-/, '')).slice(0, 100).replace(/-$/, '');
+  return ('trato-' + limpio.replace(/^trato-/, '')).slice(0, 100).replace(/-$/, '');
 }
 
 export function extraerUrls(stdout, stderr) {
@@ -27,7 +27,7 @@ export function extraerUrls(stdout, stderr) {
 }
 
 export function motivoFallo(salida) {
-  if (/credentials|vercel login|not logged|token.*(invalid|not valid)|Unauthorized|403/i.test(salida)) return 'No hay sesión de Vercel válida. Corré `npx vercel login` o configurá VERCEL_TOKEN con /vozapp:setup.';
+  if (/credentials|vercel login|not logged|token.*(invalid|not valid)|Unauthorized|403/i.test(salida)) return 'No hay sesión de Vercel válida. Corré `npx vercel login` o configurá VERCEL_TOKEN con /trato:setup.';
   if (/ENOTFOUND|ECONNRESET|ETIMEDOUT|network|getaddrinfo/i.test(salida)) return 'No hay conexión a internet (o Vercel no responde).';
   if (/rate limit|too many/i.test(salida)) return 'Vercel está limitando deploys (rate limit). Probá en unos minutos.';
   const ultima = salida.trim().split('\n').filter(Boolean).pop() || 'sin detalle';
@@ -83,7 +83,7 @@ function correr(cmd, args, { cwd, timeout = 180_000 } = {}) {
 }
 
 function prepararStage(siteDir, proyecto) {
-  const stage = join(tmpdir(), 'vozapp-deploy', proyecto);
+  const stage = join(tmpdir(), 'trato-deploy', proyecto);
   mkdirSync(stage, { recursive: true });
   for (const f of readdirSync(stage)) if (f !== '.vercel') rmSync(join(stage, f), { recursive: true, force: true });
   cpSync(siteDir, stage, { recursive: true });
@@ -128,7 +128,8 @@ function puertoLibre(desde = 4321) {
 
 export async function previewLocal(siteDir) {
   const port = await puertoLibre();
-  const hijo = spawn(process.execPath, [SERVE, resolve(siteDir), '--port', String(port)], { detached: true, stdio: 'ignore', windowsHide: true });
+  // cwd en el sitio: si heredara la carpeta del usuario, Windows no la deja mover ni renombrar mientras el preview corre.
+  const hijo = spawn(process.execPath, [SERVE, resolve(siteDir), '--port', String(port)], { cwd: resolve(siteDir), detached: true, stdio: 'ignore', windowsHide: true });
   hijo.unref();
   const local = `http://localhost:${port}/`;
   for (let i = 0; i < 30; i++) {

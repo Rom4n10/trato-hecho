@@ -1,6 +1,7 @@
 node_modules/
-vozapp-out/
+trato-out/
 .env
 .vercel/
 .DS_Store
 .superpowers/
+.impeccable/

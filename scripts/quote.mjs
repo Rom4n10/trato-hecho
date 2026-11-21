@@ -53,7 +53,7 @@ function validar(cot, cfg, tabla) {
   const errores = [];
   const tipos = Object.keys(tabla.tipos);
   const comps = Object.keys(tabla.complejidad);
-  if (!(cfg.tarifaHora > 0)) errores.push('Falta la tarifa por hora. Corré /vozapp:setup o: node scripts/config.mjs set tarifaHora=30');
+  if (!(cfg.tarifaHora > 0)) errores.push('Falta la tarifa por hora. Corré /trato:setup o: node scripts/config.mjs set tarifaHora=30');
   if (!cot || typeof cot !== 'object') return ['cotizacion.json está vacío o no es un objeto.'];
   if (!cot.proyecto) errores.push('Falta "proyecto" (nombre tentativo).');
   if (!cot.resumen) errores.push('Falta "resumen" (1–2 frases de lo que entendimos).');

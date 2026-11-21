@@ -64,7 +64,7 @@ export function proveedores(cfg) {
 }
 
 function convertirConFfmpeg(ruta) {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-audio-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-audio-'));
   const salida = join(dir, 'audio.mp3');
   const r = spawnSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', ruta, '-vn', '-ac', '1', '-ar', '16000', '-b:a', '32k', salida], { encoding: 'utf8' });
   if (r.error && r.error.code === 'ENOENT') {
@@ -75,7 +75,7 @@ function convertirConFfmpeg(ruta) {
 }
 
 function mensajeHttp(prov, status, cuerpo) {
-  if (status === 401 || status === 403) return `La clave de ${prov.nombre} (${prov.variable}) no es válida o venció. Generá una nueva y corré /vozapp:setup.`;
+  if (status === 401 || status === 403) return `La clave de ${prov.nombre} (${prov.variable}) no es válida o venció. Generá una nueva y corré /trato:setup.`;
   if (status === 413) return `El audio es demasiado grande para ${prov.nombre}. Probá con un audio más corto.`;
   if (status === 429) return `${prov.nombre} está limitando pedidos (rate limit). Esperá un minuto y reintentá.`;
   if (status === 400 && /format|decode|invalid file/i.test(cuerpo)) return `${prov.nombre} no pudo leer el audio (formato no válido o archivo dañado).`;
@@ -133,7 +133,7 @@ export async function transcribir(ruta, { env = process.env, log = () => {} } = 
 
   const lista = proveedores(loadConfig(env));
   if (!lista.length) {
-    throw new Error('Falta una clave de transcripción. Corré /vozapp:setup o definí GROQ_API_KEY (gratis en console.groq.com → API Keys).');
+    throw new Error('Falta una clave de transcripción. Corré /trato:setup o definí GROQ_API_KEY (gratis en console.groq.com → API Keys).');
   }
 
   const plan = planDeSubida(ruta, size);
@@ -189,7 +189,7 @@ async function main(argv) {
   if (r.idioma && r.idioma !== 'texto') partes.push(`idioma: ${r.idioma}`);
   console.error(partes.join(' · '));
   if (r.idioma && r.idioma !== 'texto' && !/^(es|spanish|español)$/i.test(r.idioma)) {
-    console.error(`⚠️ El audio parece estar en "${r.idioma}". VozApp igual arma todo en español.`);
+    console.error(`⚠️ El audio parece estar en "${r.idioma}". Trato Hecho igual arma todo en español.`);
   }
 }
 

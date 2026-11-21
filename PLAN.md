@@ -1,4 +1,4 @@
-# VozApp — Plan de ejecución Track 01 (sábado 21/11)
+# Trato Hecho — Plan de ejecución Track 01 (sábado 21/11)
 
 > **Del audio de WhatsApp del cliente a la propuesta aceptada, en 5 minutos.**
 > Plugin de Claude Code: le pasás el audio del cliente y te devuelve brief, cotización con 3 opciones, prototipo publicado con link + QR y la propuesta lista para mandar por WhatsApp.
@@ -14,9 +14,9 @@ Objetivo del día: **Track 01 entregable el sábado a las 21:00 CR.** El domingo
 **Dolor:** el cliente pide todo por audio de WhatsApp. Pasar de ese audio a una propuesta lleva días (escuchar, entender, estimar, armar algo para mostrar) y en ese tiempo el cliente se enfría o se va con otro.
 **Promesa:** un comando → en < 5 min tenés todo para mandarle al cliente.
 
-**Comando:** `/vozapp:crear <ruta-al-audio>`
+**Comando:** `/trato:crear <ruta-al-audio>`
 
-**Qué genera** (en `vozapp-out/<slug>/`):
+**Qué genera** (en `trato-out/<slug>/`):
 | Archivo | Qué es |
 |---|---|
 | `transcripcion.md` | Lo que dijo el cliente, limpio |
@@ -29,8 +29,8 @@ Objetivo del día: **Track 01 entregable el sábado a las 21:00 CR.** El domingo
 Al final imprime en la terminal: **link del prototipo, link de la propuesta y un QR**.
 
 ### Alcance
-- **MVP (hoy sí o sí):** transcribir → brief → cotización → prototipo → propuesta → deploy en Vercel → links + QR. `/vozapp:setup` que verifica claves. README con instalación en 2 comandos. 3 audios de ejemplo.
-- **Stretch (solo si a las 16:30 el MVP anda):** `--sin-deploy` (preview local), tono/branding del freelancer en la propuesta (logo, color), `/vozapp:iterar "cambios"` que ajusta el prototipo con un segundo audio.
+- **MVP (hoy sí o sí):** transcribir → brief → cotización → prototipo → propuesta → deploy en Vercel → links + QR. `/trato:setup` que verifica claves. README con instalación en 2 comandos. 3 audios de ejemplo.
+- **Stretch (solo si a las 16:30 el MVP anda):** `--sin-deploy` (preview local), tono/branding del freelancer en la propuesta (logo, color), `/trato:iterar "cambios"` que ajusta el prototipo con un segundo audio.
 - **Fuera:** login, base de datos, backend real en el prototipo, pagos, editar desde web.
 
 ---
@@ -44,7 +44,7 @@ Al final imprime en la terminal: **link del prototipo, link de la propuesta y un
   1. Veterinaria: turnos, recordatorios de vacunas, historial de mascotas.
   2. Barbería: reservas por barbero, servicios con precio, lista de espera.
   3. Food truck: menú del día, pedidos para retirar, ubicación de hoy.
-- [ ] Repo público en GitHub: `vozapp`. Copiá ahí los archivos de este kit (`CLAUDE.md`, `PLAN.md`, `.claude-plugin/`, `skills/`).
+- [ ] Repo público en GitHub: `trato`. Copiá ahí los archivos de este kit (`CLAUDE.md`, `PLAN.md`, `.claude-plugin/`, `skills/`).
 - [ ] Preguntá en el Discord/Discusiones de Dojo **cómo se publica en el Marketplace** (¿repo de GitHub? ¿precio lo fijás vos?). No bloquees por esto: seguí y ajustá después.
 - [ ] `git init && git commit -m "Estado inicial: kit de plan"` → deja asentado el punto de partida (regla de trabajo durante el hackathon).
 
@@ -60,12 +60,12 @@ Abrí Claude Code en la raíz del repo. Pegá cada prompt tal cual. **No pases a
 Leé CLAUDE.md y PLAN.md. Estamos en la fase F1.
 1. Revisá .claude-plugin/plugin.json, .claude-plugin/marketplace.json y los dos SKILL.md (son borradores); corregí lo que no cumpla el formato de plugins de Claude Code.
 2. Creá scripts/transcribe.mjs (Node 20, sin dependencias): recibe ruta de audio, usa GROQ_API_KEY (modelo whisper-large-v3-turbo, language "es") y si no hay, OPENAI_API_KEY. Si el formato no es aceptado (.opus), convertí con ffmpeg a .mp3 en un tmp. Escribe la transcripción en stdout. Errores claros en español.
-3. Creá scripts/config.mjs: lee ~/.vozapp/config.json + variables de entorno (env gana). Campos: GROQ_API_KEY, OPENAI_API_KEY, VERCEL_TOKEN, nombre, tarifaHora, moneda, whatsapp.
+3. Creá scripts/config.mjs: lee ~/.trato/config.json + variables de entorno (env gana). Campos: GROQ_API_KEY, OPENAI_API_KEY, VERCEL_TOKEN, nombre, tarifaHora, moneda, whatsapp.
 4. Creá scripts/doctor.mjs: verifica Node, ffmpeg, claves y npx vercel; imprime un checklist ✅/❌ con cómo arreglar cada ❌.
-5. Completá skills/setup/SKILL.md para que pregunte los datos que falten, escriba ~/.vozapp/config.json y corra doctor.mjs.
+5. Completá skills/setup/SKILL.md para que pregunte los datos que falten, escriba ~/.trato/config.json y corra doctor.mjs.
 Probá transcribe.mjs con examples/audios/veterinaria.ogg y mostrame la salida.
 ```
-**Hecho cuando:** `node scripts/transcribe.mjs examples/audios/veterinaria.ogg` devuelve el texto en < 10 s, y `claude --plugin-dir .` muestra `/vozapp:setup` y `/vozapp:crear`.
+**Hecho cuando:** `node scripts/transcribe.mjs examples/audios/veterinaria.ogg` devuelve el texto en < 10 s, y `claude --plugin-dir .` muestra `/trato:setup` y `/trato:crear`.
 
 ### F2 · Brief + cotización + propuesta (09:30–12:00)
 
@@ -87,7 +87,7 @@ Corré el flujo hasta acá con veterinaria.ogg y mostrame la propuesta generada.
 Fase F3. Pasos 5–7 de skills/crear/SKILL.md:
 1. Creá skills/crear/references/design-rules.md: reglas para que el prototipo se vea pro (paleta según rubro, tipografía, espaciado, tarjetas, navegación inferior en mobile, estados vacíos, datos de ejemplo realistas en español con nombres y precios locales, nada de lorem ipsum, accesibilidad básica de contraste).
 2. Creá skills/crear/templates/app-base.html: esqueleto de SPA en un solo archivo (Tailwind CDN + JS vanilla, router por hash, datos en un objeto JS, localStorage para que lo que el usuario cree persista). El skill lo usa como punto de partida para cada prototipo.
-3. Creá scripts/deploy.mjs: publica vozapp-out/<slug>/site en Vercel con `npx vercel deploy --prod --yes --token` usando un nombre de proyecto vozapp-<slug>; devuelve la URL. Si falla, levanta preview local con `npx serve` y lo avisa. Después imprime QR en la terminal (usá `npx -y qrcode-terminal` o generá el QR sin dependencias).
+3. Creá scripts/deploy.mjs: publica trato-out/<slug>/site en Vercel con `npx vercel deploy --prod --yes --token` usando un nombre de proyecto trato-<slug>; devuelve la URL. Si falla, levanta preview local con `npx serve` y lo avisa. Después imprime QR en la terminal (usá `npx -y qrcode-terminal` o generá el QR sin dependencias).
 4. Generá mensaje-whatsapp.txt al final.
 Corré el flujo completo con barberia.ogg, medí el tiempo de cada paso y mostrámelo.
 ```
@@ -96,7 +96,7 @@ Corré el flujo completo con barberia.ogg, medí el tiempo de cada paso y mostr�
 ### F4 · Robustez y velocidad (15:00–16:30)
 
 ```
-Fase F4. Corré /vozapp:crear con los 3 audios de examples/audios. Para cada uno, anotá en docs/pruebas.md: tiempo total, tiempo por paso, problemas. Después:
+Fase F4. Corré /trato:crear con los 3 audios de examples/audios. Para cada uno, anotá en docs/pruebas.md: tiempo total, tiempo por paso, problemas. Después:
 - Bajá el tiempo total a menos de 5 minutos (recortá instrucciones redundantes del SKILL, pedí el prototipo de una sola vez, nada de pasos de verificación lentos).
 - Manejo de errores: audio vacío o inaudible, audio en inglés, cliente que pide algo imposible (decirlo en preguntas abiertas), sin VERCEL_TOKEN (preview local), slug repetido.
 - Revisá los 3 prototipos con ojo crítico de diseñador y ajustá design-rules.md donde se vean genéricos.
@@ -107,7 +107,7 @@ Fase F4. Corré /vozapp:crear con los 3 audios de examples/audios. Para cada uno
 
 ```
 Fase F5. Dejá el repo listo para el Marketplace:
-1. README.md en español: qué hace en una frase, GIF/captura arriba, instalación en 2 comandos (/plugin marketplace add <usuario>/vozapp y /plugin install vozapp@vozapp), /vozapp:setup, primer uso con un audio de ejemplo, qué genera, costos aproximados por corrida, FAQ (¿qué audios acepta?, ¿puedo cambiar mi tarifa?, ¿qué pasa sin Vercel?), privacidad (el audio solo va al proveedor de transcripción).
+1. README.md en español: qué hace en una frase, GIF/captura arriba, instalación en 2 comandos (/plugin marketplace add <usuario>/trato y /plugin install trato@trato-hecho), /trato:setup, primer uso con un audio de ejemplo, qué genera, costos aproximados por corrida, FAQ (¿qué audios acepta?, ¿puedo cambiar mi tarifa?, ¿qué pasa sin Vercel?), privacidad (el audio solo va al proveedor de transcripción).
 2. Corré `claude plugin validate .` y arreglá todo lo que reporte.
 3. Probá la instalación desde cero como un usuario nuevo: marketplace add apuntando al repo de GitHub, install, setup, crear. Anotá cada fricción y eliminala.
 4. CHANGELOG.md, LICENSE (MIT) y docs/como-se-construyo.md: qué hizo Claude Code y qué decidí yo (requisito de entrega).
@@ -143,11 +143,11 @@ Ver secciones 4 y 5. A las 21:00 Track 01 queda **cerrado**. Lo que no esté, no
 ## 4. Guion del video (2:30 máx.)
 
 1. **(0:00–0:20) Dolor.** Pantalla de WhatsApp con un audio de cliente. "Tu cliente te manda esto. Normalmente tardás 3 días en mandarle una propuesta. Para entonces ya habló con otro."
-2. **(0:20–0:35) Un comando.** Arrastrás el audio a Claude Code: `/vozapp:crear audio.ogg`.
+2. **(0:20–0:35) Un comando.** Arrastrás el audio a Claude Code: `/trato:crear audio.ogg`.
 3. **(0:35–1:30) Magia, acelerada x4 con cronómetro visible.** Transcripción → brief con preguntas → cotización con 3 opciones → prototipo → deploy → QR.
 4. **(1:30–2:00) Lo que ve el cliente.** Escaneás el QR con el celular: navegás el prototipo, abrís la propuesta, tocás "Acepto por WhatsApp" y se abre el chat con el mensaje listo.
 5. **(2:00–2:20) Prueba.** "Lo probaron X builders este fin de semana" + una cita. Costo por corrida.
-6. **(2:20–2:30) Cierre.** "VozApp. Del audio al sí del cliente, en 5 minutos. Instalalo con 2 comandos."
+6. **(2:20–2:30) Cierre.** "Trato Hecho. Del audio al sí del cliente, en 5 minutos. Instalalo con 2 comandos."
 
 Grabá con cronómetro real en pantalla. Si podés, una toma sin cortes del flujo completo como respaldo.
 

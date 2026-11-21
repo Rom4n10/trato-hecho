@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-// Configuración de VozApp: ~/.vozapp/config.json + variables de entorno (env gana).
+// Configuración de Trato Hecho: ~/.trato/config.json + variables de entorno (env gana).
 // Uso CLI:
 //   node config.mjs                      → muestra la config (claves enmascaradas)
-//   node config.mjs set clave=valor ...  → guarda en ~/.vozapp/config.json (permisos 600)
+//   node config.mjs set clave=valor ...  → guarda en ~/.trato/config.json (permisos 600)
 import { readFileSync, writeFileSync, mkdirSync, chmodSync, existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -14,14 +14,14 @@ const ENV = {
   GROQ_API_KEY: 'GROQ_API_KEY',
   OPENAI_API_KEY: 'OPENAI_API_KEY',
   VERCEL_TOKEN: 'VERCEL_TOKEN',
-  nombre: 'VOZAPP_NOMBRE',
-  tarifaHora: 'VOZAPP_TARIFA_HORA',
-  moneda: 'VOZAPP_MONEDA',
-  whatsapp: 'VOZAPP_WHATSAPP',
+  nombre: 'TRATO_NOMBRE',
+  tarifaHora: 'TRATO_TARIFA_HORA',
+  moneda: 'TRATO_MONEDA',
+  whatsapp: 'TRATO_WHATSAPP',
 };
 
 export function configDir(env = process.env) {
-  return env.VOZAPP_HOME || join(homedir(), '.vozapp');
+  return env.TRATO_HOME || join(homedir(), '.trato');
 }
 
 export function configPath(env = process.env) {
@@ -37,7 +37,7 @@ function leerArchivo(env) {
     const datos = JSON.parse(texto);
     return datos && typeof datos === 'object' ? datos : {};
   } catch {
-    throw new Error(`El archivo ${ruta} (config.json) no es JSON válido. Corregilo o borralo y corré /vozapp:setup de nuevo.`);
+    throw new Error(`El archivo ${ruta} (config.json) no es JSON válido. Corregilo o borralo y corré /trato:setup de nuevo.`);
   }
 }
 

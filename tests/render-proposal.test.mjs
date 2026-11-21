@@ -61,11 +61,11 @@ test('renderPropuesta: sin nombre ni app funciona igual', () => {
 });
 
 test('CLI: calcula si falta calculo y escribe site/propuesta/index.html', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-p-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-p-'));
   const c = cot();
   delete c.calculo;
   writeFileSync(join(dir, 'cotizacion.json'), JSON.stringify(c));
-  const env = { ...process.env, VOZAPP_HOME: mkdtempSync(join(tmpdir(), 'vozapp-h-')), VOZAPP_TARIFA_HORA: '25' };
+  const env = { ...process.env, TRATO_HOME: mkdtempSync(join(tmpdir(), 'trato-h-')), TRATO_TARIFA_HORA: '25' };
   const r = spawnSync(process.execPath, [join(RAIZ, 'scripts/render-proposal.mjs'), dir], { encoding: 'utf8', env });
   assert.equal(r.status, 0, r.stderr);
   assert.ok(existsSync(join(dir, 'site', 'propuesta', 'index.html')));

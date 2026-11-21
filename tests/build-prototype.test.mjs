@@ -62,13 +62,13 @@ test('construir inyecta el JSON escapando </script>', () => {
 });
 
 test('CLI: arma site/index.html y falla con errores legibles', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-b-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-b-'));
   writeFileSync(join(dir, 'app.json'), JSON.stringify(EJEMPLO));
   const ok = spawnSync(process.execPath, [join(RAIZ, 'scripts/build-prototype.mjs'), dir], { encoding: 'utf8' });
   assert.equal(ok.status, 0, ok.stderr);
   assert.ok(existsSync(join(dir, 'site', 'index.html')));
 
-  const dir2 = mkdtempSync(join(tmpdir(), 'vozapp-b-'));
+  const dir2 = mkdtempSync(join(tmpdir(), 'trato-b-'));
   writeFileSync(join(dir2, 'app.json'), '{"nombre": "x", ');
   const mal = spawnSync(process.execPath, [join(RAIZ, 'scripts/build-prototype.mjs'), dir2], { encoding: 'utf8' });
   assert.notEqual(mal.status, 0);

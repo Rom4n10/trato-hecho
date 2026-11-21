@@ -97,9 +97,9 @@ test('formatearMoneda usa el formato local', () => {
 });
 
 test('CLI: escribe calculo en cotizacion.json y es idempotente', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-q-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-q-'));
   writeFileSync(join(dir, 'cotizacion.json'), JSON.stringify(base()));
-  const env = { ...process.env, VOZAPP_HOME: mkdtempSync(join(tmpdir(), 'vozapp-h-')) };
+  const env = { ...process.env, TRATO_HOME: mkdtempSync(join(tmpdir(), 'trato-h-')) };
   const r1 = spawnSync(process.execPath, [SCRIPT, dir, '--tarifa', '30', '--moneda', 'USD'], { encoding: 'utf8', env });
   assert.equal(r1.status, 0, r1.stderr);
   assert.match(r1.stdout, /Recomendada/);
@@ -111,10 +111,10 @@ test('CLI: escribe calculo en cotizacion.json y es idempotente', () => {
 });
 
 test('CLI: sin tarifa configurada pide setup', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-q-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-q-'));
   writeFileSync(join(dir, 'cotizacion.json'), JSON.stringify(base()));
-  const env = { ...process.env, VOZAPP_HOME: mkdtempSync(join(tmpdir(), 'vozapp-h-')) };
-  delete env.VOZAPP_TARIFA_HORA;
+  const env = { ...process.env, TRATO_HOME: mkdtempSync(join(tmpdir(), 'trato-h-')) };
+  delete env.TRATO_TARIFA_HORA;
   const r = spawnSync(process.execPath, [SCRIPT, dir], { encoding: 'utf8', env });
   assert.notEqual(r.status, 0);
   assert.match(r.stderr, /setup/);

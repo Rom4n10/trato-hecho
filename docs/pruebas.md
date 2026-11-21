@@ -23,7 +23,7 @@ Medido en Windows 11, Node 22, con los archivos que escribe el modelo ya listos:
 ## Pendiente de medir
 
 - [ ] Transcripción real con Groq de los 3 audios (falta la clave).
-- [ ] `/vozapp:crear` de punta a punta con el modelo y tiempo total (< 5 min objetivo).
+- [ ] `/trato:crear` de punta a punta con el modelo y tiempo total (< 5 min objetivo).
 - [ ] Deploy real a Vercel y apertura desde el celular escaneando el QR.
 - [ ] Audios reales grabados por WhatsApp (con muletillas y ruido).
 - [ ] Instalación desde GitHub en una carpeta limpia.

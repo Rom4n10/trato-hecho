@@ -1,10 +1,10 @@
-# VozApp
+# Trato Hecho
 
-**Del audio de WhatsApp del cliente a la propuesta aceptada, en 5 minutos.**
+**Del audio de WhatsApp del cliente al “¡trato hecho!”, en 5 minutos.**
 
 Plugin de Claude Code para freelancers y agencias chicas de LATAM que venden desarrollo. Le pasás el audio en el que tu cliente te cuenta lo que necesita y te devuelve el brief, la cotización con 3 opciones, un prototipo navegable publicado con link y QR, y la propuesta lista para mandar por WhatsApp.
 
-![Prototipo generado por VozApp para una barbería](docs/img/prototipo-desktop.png)
+![Prototipo generado por Trato Hecho para una barbería](docs/img/prototipo-desktop.png)
 
 ## El problema
 
@@ -15,31 +15,31 @@ Tu cliente te pide todo por audio de WhatsApp. Pasar de ese audio a una propuest
 En Claude Code:
 
 ```
-/plugin marketplace add Rom4n10/vozapp
-/plugin install vozapp@vozapp
+/plugin marketplace add Rom4n10/trato-hecho
+/plugin install trato@trato-hecho
 ```
 
-Después corré **`/vozapp:setup`**: te pide una clave gratis de Groq para transcribir, tu tarifa por hora, moneda, nombre y WhatsApp, y verifica que todo esté listo.
+Después corré **`/trato:setup`**: te pide una clave gratis de Groq para transcribir, tu tarifa por hora, moneda, nombre y WhatsApp, y verifica que todo esté listo.
 
-Requisitos: Node 20 o más nuevo. Para publicar los links, una cuenta gratis de Vercel (`npx vercel login` o un token); sin Vercel, VozApp levanta un preview en tu red local.
+Requisitos: Node 20 o más nuevo. Para publicar los links, una cuenta gratis de Vercel (`npx vercel login` o un token); sin Vercel, Trato Hecho levanta un preview en tu red local.
 
 ## Uso
 
 ```
-/vozapp:crear ruta/al/audio-del-cliente.ogg
+/trato:crear ruta/al/audio-del-cliente.ogg
 ```
 
 ¿Todavía no tenés un audio? Probalo con uno de ejemplo:
 
 ```
-/vozapp:crear ejemplo barberia
+/trato:crear ejemplo barberia
 ```
 
 Acepta `.ogg`, `.opus`, `.m4a`, `.mp3`, `.wav`, `.webm` y también `.txt` con lo que pidió el cliente. Agregá `--sin-deploy` para no publicar en Vercel.
 
 ## Qué genera
 
-Todo queda en `vozapp-out/<cliente>/`:
+Todo queda en `trato-out/<cliente>/`:
 
 | Archivo | Qué es |
 |---|---|
@@ -81,17 +81,17 @@ audio ──► transcribe.mjs (Groq Whisper) ──► texto
 
 **¿Qué audios acepta?** Los de WhatsApp (`.ogg`/`.opus`) y casi cualquier otro. Formatos raros (`.aac`, `.amr`) se convierten con ffmpeg si lo tenés instalado.
 
-**¿Puedo cambiar mi tarifa?** Sí: `/vozapp:setup`, o `node scripts/config.mjs set tarifaHora=35 moneda=USD`.
+**¿Puedo cambiar mi tarifa?** Sí: `/trato:setup`, o `node scripts/config.mjs set tarifaHora=35 moneda=USD`.
 
 **¿Qué pasa si no tengo Vercel?** Se levanta un preview en tu red local y el QR apunta ahí: tu celular tiene que estar en el mismo Wi-Fi.
 
 **¿Y si el cliente habla en otro idioma?** Se transcribe igual y todo se arma en español.
 
-**¿Puedo ajustar el prototipo?** Editá `vozapp-out/<cliente>/app.json` (o pedíselo a Claude) y corré `node scripts/publicar.mjs vozapp-out/<cliente>`.
+**¿Puedo ajustar el prototipo?** Editá `trato-out/<cliente>/app.json` (o pedíselo a Claude) y corré `node scripts/publicar.mjs trato-out/<cliente>`.
 
 ## Privacidad
 
-El audio solo viaja al proveedor de transcripción (Groq, u OpenAI si lo configurás). Tus claves quedan en `~/.vozapp/config.json` (en macOS y Linux, con permisos solo para tu usuario) y nunca se muestran completas. El prototipo usa datos de ejemplo, no datos reales del cliente.
+El audio solo viaja al proveedor de transcripción (Groq, u OpenAI si lo configurás). Tus claves quedan en `~/.trato/config.json` (en macOS y Linux, con permisos solo para tu usuario) y nunca se muestran completas. El prototipo usa datos de ejemplo, no datos reales del cliente.
 
 ## Desarrollo
 

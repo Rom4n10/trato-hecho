@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, readFileSync, existsSync, cpSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, readFileSync, existsSync, renameSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -12,19 +12,19 @@ import { generarQR } from '../scripts/qr.mjs';
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 test('nombreProyecto: minúsculas, sin acentos ni símbolos, con prefijo', () => {
-  assert.equal(nombreProyecto('Veterinaria Ñandú!!'), 'vozapp-veterinaria-nandu');
-  assert.equal(nombreProyecto('barberia-don-ramiro'), 'vozapp-barberia-don-ramiro');
+  assert.equal(nombreProyecto('Veterinaria Ñandú!!'), 'trato-veterinaria-nandu');
+  assert.equal(nombreProyecto('barberia-don-ramiro'), 'trato-barberia-don-ramiro');
   assert.ok(nombreProyecto('x'.repeat(200)).length <= 100);
 });
 
 test('extraerUrls: prefiere el alias de producción', () => {
-  const stdout = 'https://vozapp-patitas-k2j3h4-rom4n10s-projects.vercel.app\n';
-  const stderr = 'Vercel CLI 57.0.0\n🔍  Inspect: https://vercel.com/rom4n10s-projects/vozapp-patitas/abc [2s]\n✅  Production: https://vozapp-patitas-k2j3h4-rom4n10s-projects.vercel.app [12s]\n🔗  Aliased: https://vozapp-patitas.vercel.app [12s]\n';
+  const stdout = 'https://trato-patitas-k2j3h4-rom4n10s-projects.vercel.app\n';
+  const stderr = 'Vercel CLI 57.0.0\n🔍  Inspect: https://vercel.com/rom4n10s-projects/trato-patitas/abc [2s]\n✅  Production: https://trato-patitas-k2j3h4-rom4n10s-projects.vercel.app [12s]\n🔗  Aliased: https://trato-patitas.vercel.app [12s]\n';
   assert.deepEqual(extraerUrls(stdout, stderr), {
-    deploy: 'https://vozapp-patitas-k2j3h4-rom4n10s-projects.vercel.app',
-    alias: 'https://vozapp-patitas.vercel.app',
+    deploy: 'https://trato-patitas-k2j3h4-rom4n10s-projects.vercel.app',
+    alias: 'https://trato-patitas.vercel.app',
   });
-  assert.deepEqual(extraerUrls(stdout, 'nada'), { deploy: 'https://vozapp-patitas-k2j3h4-rom4n10s-projects.vercel.app', alias: null });
+  assert.deepEqual(extraerUrls(stdout, 'nada'), { deploy: 'https://trato-patitas-k2j3h4-rom4n10s-projects.vercel.app', alias: null });
 });
 
 test('motivoFallo traduce errores comunes', () => {
@@ -52,7 +52,7 @@ test('mensajeWhatsApp incluye links y resumen', () => {
 });
 
 test('generarQR: tamaño y patrones de posición', () => {
-  const q = generarQR('https://vozapp-patitas.vercel.app/');
+  const q = generarQR('https://trato-patitas.vercel.app/');
   assert.equal(q.tam, q.version * 4 + 17);
   const m = q.modulos;
   for (const [x, y] of [[0, 0], [q.tam - 7, 0], [0, q.tam - 7]]) {
@@ -63,7 +63,7 @@ test('generarQR: tamaño y patrones de posición', () => {
 });
 
 test('CLI publicar --sin-deploy: arma todo y deja links, mensaje y QR', async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-pub-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-pub-'));
   writeFileSync(join(dir, 'app.json'), readFileSync(join(RAIZ, 'skills/crear/references/app-ejemplo.json')));
   writeFileSync(join(dir, 'cotizacion.json'), JSON.stringify({
     proyecto: 'Patitas', resumen: 'Turnos online.', entendimos: ['a'], preguntas: ['¿a?', '¿b?', '¿c?'],
@@ -73,7 +73,7 @@ test('CLI publicar --sin-deploy: arma todo y deja links, mensaje y QR', async ()
       { id: 'c', nombre: 'Pagos', tipo: 'pagos', complejidad: 'media', opcion: 'completa' },
     ],
   }));
-  const env = { ...process.env, VOZAPP_HOME: mkdtempSync(join(tmpdir(), 'vozapp-h-')), VOZAPP_TARIFA_HORA: '20', VOZAPP_NOMBRE: 'Ana' };
+  const env = { ...process.env, TRATO_HOME: mkdtempSync(join(tmpdir(), 'trato-h-')), TRATO_TARIFA_HORA: '20', TRATO_NOMBRE: 'Ana' };
   const r = spawnSync(process.execPath, [join(RAIZ, 'scripts/publicar.mjs'), dir, '--sin-deploy'], { encoding: 'utf8', env, timeout: 20000 });
   assert.equal(r.status, 0, r.stderr + r.stdout);
   const links = JSON.parse(readFileSync(join(dir, 'links.json'), 'utf8'));
@@ -86,8 +86,10 @@ test('CLI publicar --sin-deploy: arma todo y deja links, mensaje y QR', async ()
   const res = await fetch(links.local + 'propuesta/');
   assert.equal(res.status, 200);
 
-  // Segunda corrida: reemplaza el servidor anterior en vez de dejarlo vivo.
-  const r2 = spawnSync(process.execPath, [join(RAIZ, 'scripts/publicar.mjs'), dir, '--sin-deploy'], { encoding: 'utf8', env, timeout: 20000 });
+  // Segunda corrida desde otra carpeta: reemplaza el servidor anterior y no deja tomada la carpeta del usuario.
+  const carpetaUsuario = mkdtempSync(join(tmpdir(), 'trato-usuario-'));
+  const r2 = spawnSync(process.execPath, [join(RAIZ, 'scripts/publicar.mjs'), dir, '--sin-deploy'], { encoding: 'utf8', env, timeout: 20000, cwd: carpetaUsuario });
+  renameSync(carpetaUsuario, carpetaUsuario + '-movida');
   assert.equal(r2.status, 0, r2.stderr + r2.stdout);
   const links2 = JSON.parse(readFileSync(join(dir, 'links.json'), 'utf8'));
   assert.notEqual(links2.pidServidor, links.pidServidor);

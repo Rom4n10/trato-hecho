@@ -1,6 +1,6 @@
-# Cómo se construyó VozApp
+# Cómo se construyó Trato Hecho
 
-VozApp se construyó en un día con Claude Code. Este documento separa lo que decidió la persona de lo que hizo la IA.
+Trato Hecho se construyó en un día con Claude Code. Este documento separa lo que decidió la persona de lo que hizo la IA.
 
 ## Lo que decidió el humano
 

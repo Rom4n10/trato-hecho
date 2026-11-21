@@ -10,8 +10,8 @@ import { planDeSubida, pareceVacio, proveedores, camposPedido, hayHuecos } from 
 const SCRIPT = join(dirname(fileURLToPath(import.meta.url)), '..', 'scripts', 'transcribe.mjs');
 
 function correr(args, env = {}) {
-  const home = mkdtempSync(join(tmpdir(), 'vozapp-tr-'));
-  const limpio = { ...process.env, VOZAPP_HOME: home, ...env };
+  const home = mkdtempSync(join(tmpdir(), 'trato-tr-'));
+  const limpio = { ...process.env, TRATO_HOME: home, ...env };
   delete limpio.GROQ_API_KEY;
   delete limpio.OPENAI_API_KEY;
   Object.assign(limpio, env);
@@ -73,7 +73,7 @@ test('hayHuecos detecta un segmento largo casi vacío (caso real veterinaria.ogg
 });
 
 test('CLI: archivo de texto pasa directo sin claves', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-txt-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-txt-'));
   const f = join(dir, 'pedido.txt');
   writeFileSync(f, '  Hola, quiero una app para mi barbería.  \n');
   const r = correr([f]);
@@ -94,16 +94,16 @@ test('CLI: archivo inexistente da error claro', () => {
 });
 
 test('CLI: audio sin claves pide setup', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-aud-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-aud-'));
   const f = join(dir, 'a.ogg');
   writeFileSync(f, Buffer.from('OggS fake'));
   const r = correr([f]);
   assert.notEqual(r.status, 0);
-  assert.match(r.stderr, /\/vozapp:setup/);
+  assert.match(r.stderr, /\/trato:setup/);
 });
 
 test('CLI: archivo vacío da error claro', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'vozapp-vac-'));
+  const dir = mkdtempSync(join(tmpdir(), 'trato-vac-'));
   const f = join(dir, 'vacio.ogg');
   writeFileSync(f, '');
   const r = correr([f], { GROQ_API_KEY: 'x' });
