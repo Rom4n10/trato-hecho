@@ -13,6 +13,34 @@ export const ESTILOS = ['fresco', 'clasico', 'calle', 'sereno', 'profesional'];
 const CON_COLECCION = ['lista', 'grilla', 'formulario'];
 
 const destino = (ir) => String(ir).split('/')[0];
+const FOTOS_URL = new URL('../skills/crear/references/fotos.json', import.meta.url);
+const UNSPLASH = (id) => `https://images.unsplash.com/${id}?w=700&q=65&auto=format&fit=crop`;
+
+// Recorre app.json y reemplaza "foto:<clave>[:n]" por la URL de la foto curada. Devuelve errores.
+export function resolverFotos(app, catalogo = JSON.parse(readFileSync(FOTOS_URL, 'utf8'))) {
+  const errores = [];
+  const claves = Object.keys(catalogo).filter((k) => !k.startsWith('_'));
+  const visitar = (v) => {
+    if (typeof v === 'string') {
+      const m = v.match(/^foto:([a-z-]+)(?::(\d+))?$/);
+      if (!m) return v;
+      const lista = catalogo[m[1]];
+      const n = m[2] ? Number(m[2]) : 1;
+      if (!Array.isArray(lista)) { errores.push(`"${v}": la clave "${m[1]}" no existe. Claves: ${claves.join(', ')}.`); return v; }
+      if (n < 1 || n > lista.length) { errores.push(`"${v}": "${m[1]}" tiene fotos de la 1 a la ${lista.length}.`); return v; }
+      return UNSPLASH(lista[n - 1]);
+    }
+    if (Array.isArray(v)) { for (let i = 0; i < v.length; i++) v[i] = visitar(v[i]); return v; }
+    if (v && typeof v === 'object') { for (const k of Object.keys(v)) v[k] = visitar(v[k]); return v; }
+    return v;
+  };
+  visitar(app);
+  return errores;
+}
+
+export function hayEmojis(v) {
+  return /\p{Extended_Pictographic}/u.test(JSON.stringify(v));
+}
 
 export function validarApp(app) {
   const errores = [];
@@ -112,6 +140,8 @@ export function construirCarpeta(dir) {
     try { app.moneda = loadConfig().moneda; } catch { app.moneda = 'USD'; }
   }
   const { errores, avisos } = validarApp(app);
+  errores.push(...resolverFotos(app));
+  if (hayEmojis(app)) avisos.push('app.json tiene emojis: el prototipo los oculta. Usá "icono" (set de íconos) o "foto" (catálogo) en su lugar.');
   if (errores.length) throw new Error(`app.json tiene ${errores.length} problema(s):\n- ${errores.join('\n- ')}`);
   const html = construir(app, readFileSync(PLANTILLA_URL, 'utf8'));
   mkdirSync(join(dir, 'site'), { recursive: true });

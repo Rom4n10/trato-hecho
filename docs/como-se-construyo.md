@@ -31,6 +31,10 @@ Trato Hecho se construyó en un día con Claude Code. Este documento separa lo q
 - `deploy.mjs`: publica en Vercel con un nombre de proyecto por cliente y, si falla, levanta un preview en la red local eligiendo la IP correcta (descartó la del adaptador de VirtualBox que había tomado primero).
 - Generador de QR propio sin dependencias, verificado decodificando 5 casos con jsQR en el navegador.
 
+### Diseño de los prototipos
+- A pedido del humano ("los emojis se ven muy IA"), reemplazó todas las imágenes: armó un catálogo de fotos libres de Unsplash revisando una hoja de contactos de 95 candidatas, incrustó 77 íconos de Lucide y usó iniciales para las personas. El motor borra cualquier emoji que se cuele.
+- Revisó cada cambio en el navegador en celular y escritorio; corrigió fotos que no cargaban (carga diferida dentro del contenedor con scroll), tarjetas apretadas y el pin del mapa.
+
 ### Prueba real y correcciones
 - Comparó 5 variantes de Whisper para encontrar por qué se perdía una frase del audio: el parámetro `prompt` con el modelo turbo. Lo quitó y agregó un reintento automático.
 - Corrió `/trato:crear` de punta a punta con Claude desde una carpeta vacía: 2 min 7 s, sin errores. Detectó que el modelo inventaba el tiempo total y lo reemplazó por una medición real.

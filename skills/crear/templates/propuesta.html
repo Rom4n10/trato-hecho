@@ -39,7 +39,7 @@ blockquote{font-family:var(--fd);font-weight:500;font-size:clamp(21px,5vw,25px);
 .proto{display:flex;gap:20px;align-items:center;margin-top:48px;background:var(--acento-cla);border-radius:24px;padding:22px;text-decoration:none;transition:transform .15s}
 .proto:hover{transform:translateY(-2px)}
 .mini{width:92px;height:168px;border-radius:20px;background:var(--papel);border:5px solid var(--tinta);flex:none;overflow:hidden;display:flex;flex-direction:column}
-.mini .top{background:var(--acento);height:62px;display:grid;place-items:center;font-size:30px}
+.mini .top{background:var(--acento) center/cover no-repeat;height:62px;display:grid;place-items:center;font-family:var(--fd);font-weight:800;font-size:20px;color:#fff;letter-spacing:.02em}
 .mini .lin{height:9px;border-radius:5px;background:var(--linea);margin:8px 9px 0}
 .mini .lin.c{width:55%}
 .proto h2{margin-bottom:6px}
@@ -106,7 +106,7 @@ footer b{color:var(--tinta)}
   </section>
 
   <a class="proto" href="../">
-    <span class="mini" aria-hidden="true"><span class="top">{{APP_LOGO}}</span><span class="lin"></span><span class="lin c"></span><span class="lin"></span><span class="lin c"></span></span>
+    <span class="mini" aria-hidden="true"><span class="top"{{APP_FOTO}}>{{APP_LOGO}}</span><span class="lin"></span><span class="lin c"></span><span class="lin"></span><span class="lin c"></span></span>
     <span>
       <h2>Probalo en tu celular</h2>
       <p>Un prototipo de {{APP_NOMBRE}} con datos de ejemplo. Tocá todo: no se rompe nada.</p>

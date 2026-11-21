@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { loadConfig } from './config.mjs';
 import { calcular, leerJSON, rutaCotizacion } from './quote.mjs';
+import { resolverFotos } from './build-prototype.mjs';
 
 const PLANTILLA_URL = new URL('../skills/crear/templates/propuesta.html', import.meta.url);
 const COLORES = { fresco: '#0E7C6B', clasico: '#7A1E2C', calle: '#E4572E', sereno: '#6B5CA5', profesional: '#24527A' };
@@ -46,6 +47,18 @@ function onda(semilla, barras = 40) {
     html += `<i style="height:${Math.round(18 + v * 82)}%"></i>`;
   }
   return html;
+}
+
+function iniciales(t) {
+  const p = String(t || '').split(/\s+/).filter((w) => /[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]/.test(w));
+  return ((p[0] || '?').charAt(0) + (p[1] ? p[1].charAt(0) : '')).toUpperCase();
+}
+
+// Primera foto de portada (hero) del prototipo, ya resuelta a URL.
+export function fotoPortada(app) {
+  if (!app || !Array.isArray(app.pantallas)) return '';
+  for (const p of app.pantallas) for (const b of p.bloques || []) if (b && b.tipo === 'hero' && /^https:\/\//.test(b.foto || '')) return b.foto;
+  return '';
 }
 
 function duracion(seg) {
@@ -97,7 +110,8 @@ export function renderPropuesta({ cot, cfg, app, plantilla }) {
     ONDA: onda(cot.resumen || cot.proyecto),
     DURACION: esc(duracion(cot.duracionAudio)),
     ENTENDIMOS: (cot.entendimos || []).map((x) => `<li>${esc(x)}</li>`).join(''),
-    APP_LOGO: esc((app && app.logo) || '📱'),
+    APP_LOGO: fotoPortada(app) ? '' : esc(iniciales((app && app.nombre) || cot.proyecto)),
+    APP_FOTO: fotoPortada(app) ? ` style="background-image:url('${esc(fotoPortada(app))}')"` : '',
     APP_NOMBRE: esc((app && app.nombre) || cot.proyecto),
     MONEDA: esc(calc.moneda),
     OPCIONES: calc.opciones.map((o, i, arr) => tarjeta(o, i, arr, cot, cfg, recomendada)).join('\n      '),
@@ -125,7 +139,7 @@ export function renderCarpeta(dir, cfg = loadConfig()) {
   const rutaApp = join(dir, 'app.json');
   let app = null;
   if (existsSync(rutaApp)) {
-    try { app = JSON.parse(readFileSync(rutaApp, 'utf8')); } catch { app = null; }
+    try { app = JSON.parse(readFileSync(rutaApp, 'utf8')); resolverFotos(app); } catch { app = null; }
   }
   const html = renderPropuesta({ cot, cfg, app, plantilla: readFileSync(PLANTILLA_URL, 'utf8') });
   const salidaDir = join(dir, 'site', 'propuesta');

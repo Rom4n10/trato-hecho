@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 — 2026-11-21
+
+- Prototipos con fotos reales: catálogo curado de fotos libres de Unsplash para 23 rubros (`"foto:hamburguesa:2"`).
+- Íconos de Lucide (77) en lugar de emojis; el motor borra cualquier emoji que llegue.
+- Personas con avatar de iniciales, logo con ícono del rubro o monograma, favicon con la marca.
+- Portadas con foto, fichas con portada, tarjetas más legibles, pin de mapa nuevo.
+- La propuesta muestra la foto de portada de la app en el mini-celular.
+
 ## 0.1.1 — 2026-11-21
 
 - `/trato:crear` informa el tiempo total real (antes el modelo lo estimaba).

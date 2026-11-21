@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { validarApp, construir } from '../scripts/build-prototype.mjs';
+import { validarApp, construir, resolverFotos, hayEmojis } from '../scripts/build-prototype.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const EJEMPLO = JSON.parse(readFileSync(join(RAIZ, 'skills/crear/references/app-ejemplo.json'), 'utf8'));
@@ -48,6 +48,21 @@ test('grilla con carrito exige pantallaCarrito', () => {
   app.pantallas[0].bloques.push({ tipo: 'grilla', coleccion: 'menu', carrito: true, item: { titulo: '{nombre}', precio: '{precio|moneda}' } });
   const { errores } = validarApp(app);
   assert.ok(errores.some((e) => /pantallaCarrito/.test(e)));
+});
+
+test('resolverFotos traduce foto:<clave>[:n] a URLs de Unsplash y avisa claves inválidas', () => {
+  const app = { pantallas: [{ bloques: [{ tipo: 'hero', foto: 'foto:hamburguesa:2' }] }], colecciones: { menu: [{ foto: 'foto:papas' }, { foto: 'foto:inexistente' }, { foto: 'foto:pizza:99' }] } };
+  const errores = resolverFotos(app);
+  assert.match(app.pantallas[0].bloques[0].foto, /^https:\/\/images\.unsplash\.com\/photo-1572802419224-296b0aeee0d9\?/);
+  assert.match(app.colecciones.menu[0].foto, /^https:\/\/images\.unsplash\.com\/photo-1630384060421/);
+  assert.equal(errores.length, 2);
+  assert.ok(errores.some((e) => /inexistente/.test(e)));
+  assert.ok(errores.some((e) => /pizza:99/.test(e)));
+});
+
+test('hayEmojis detecta emojis en cualquier texto del app.json', () => {
+  assert.equal(hayEmojis({ a: [{ b: 'Hola 👋' }] }), true);
+  assert.equal(hayEmojis({ a: 'Corte + barba', n: 3 }), false);
 });
 
 test('construir inyecta el JSON escapando </script>', () => {

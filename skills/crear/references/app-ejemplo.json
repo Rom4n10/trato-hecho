@@ -1,117 +1,451 @@
 {
   "nombre": "Patitas",
   "descripcion": "Turnos, vacunas e historial de tus mascotas, desde el celular.",
-  "logo": "🐾",
+  "logo": "pata",
   "estilo": "fresco",
   "moneda": "ARS",
   "notificaciones": true,
   "inicio": "inicio",
   "colecciones": {
     "mascotas": [
-      { "id": "toby", "nombre": "Toby", "especie": "Perro", "raza": "Labrador", "edad": "4 años", "peso": "28 kg", "dueno": "Carla Gómez", "imagen": "🐶", "estado": "Vacunas al día" },
-      { "id": "mishi", "nombre": "Mishi", "especie": "Gato", "raza": "Siamés", "edad": "2 años", "peso": "4,2 kg", "dueno": "Carla Gómez", "imagen": "🐱", "estado": "Vacuna próxima" }
+      {
+        "id": "toby",
+        "nombre": "Toby",
+        "especie": "Perro",
+        "raza": "Labrador",
+        "edad": "4 años",
+        "peso": "28 kg",
+        "dueno": "Carla Gómez",
+        "imagen": "foto:perro:1",
+        "estado": "Vacunas al día"
+      },
+      {
+        "id": "mishi",
+        "nombre": "Mishi",
+        "especie": "Gato",
+        "raza": "Siamés",
+        "edad": "2 años",
+        "peso": "4,2 kg",
+        "dueno": "Carla Gómez",
+        "imagen": "foto:gato:3",
+        "estado": "Vacuna próxima"
+      }
     ],
     "turnos": [
-      { "id": "t1", "mascota": "Toby", "motivo": "Control anual", "fecha": "+1", "hora": "10:30", "profesional": "Dra. Sofía Ruiz", "estado": "Confirmado", "imagen": "🐶" },
-      { "id": "t2", "mascota": "Mishi", "motivo": "Vacuna triple felina", "fecha": "+4", "hora": "17:00", "profesional": "Dr. Martín Paz", "estado": "Pendiente", "imagen": "🐱" },
-      { "id": "t3", "mascota": "Toby", "motivo": "Desparasitación", "fecha": "-21", "hora": "09:00", "profesional": "Dra. Sofía Ruiz", "estado": "Atendido", "imagen": "🐶" }
+      {
+        "id": "t1",
+        "mascota": "Toby",
+        "motivo": "Control anual",
+        "fecha": "+1",
+        "hora": "10:30",
+        "profesional": "Dra. Sofía Ruiz",
+        "estado": "Confirmado",
+        "imagen": "foto:perro:1"
+      },
+      {
+        "id": "t2",
+        "mascota": "Mishi",
+        "motivo": "Vacuna triple felina",
+        "fecha": "+4",
+        "hora": "17:00",
+        "profesional": "Dr. Martín Paz",
+        "estado": "Pendiente",
+        "imagen": "foto:gato:3"
+      },
+      {
+        "id": "t3",
+        "mascota": "Toby",
+        "motivo": "Desparasitación",
+        "fecha": "-21",
+        "hora": "09:00",
+        "profesional": "Dra. Sofía Ruiz",
+        "estado": "Atendido",
+        "imagen": "foto:perro:1"
+      }
     ],
     "vacunas": [
-      { "id": "v1", "mascotaId": "toby", "nombre": "Antirrábica", "fecha": "-120", "proxima": "+245" },
-      { "id": "v2", "mascotaId": "toby", "nombre": "Séxtuple canina", "fecha": "-30", "proxima": "+335" },
-      { "id": "v3", "mascotaId": "mishi", "nombre": "Triple felina", "fecha": "-350", "proxima": "+15" }
+      {
+        "id": "v1",
+        "mascotaId": "toby",
+        "nombre": "Antirrábica",
+        "fecha": "-120",
+        "proxima": "+245"
+      },
+      {
+        "id": "v2",
+        "mascotaId": "toby",
+        "nombre": "Séxtuple canina",
+        "fecha": "-30",
+        "proxima": "+335"
+      },
+      {
+        "id": "v3",
+        "mascotaId": "mishi",
+        "nombre": "Triple felina",
+        "fecha": "-350",
+        "proxima": "+15"
+      }
     ]
   },
   "pantallas": [
     {
-      "id": "inicio", "titulo": "Inicio", "nav": true, "icono": "inicio",
+      "id": "inicio",
+      "titulo": "Inicio",
+      "nav": true,
+      "icono": "inicio",
       "bloques": [
-        { "tipo": "hero", "titulo": "Hola, Carla", "texto": "A Mishi le toca la vacuna triple en 15 días.", "imagen": "🐾", "accion": { "texto": "Sacar turno", "ir": "nuevo-turno" } },
-        { "tipo": "accesos", "items": [
-          { "texto": "Turno", "icono": "calendario", "ir": "nuevo-turno" },
-          { "texto": "Mascotas", "icono": "corazon", "ir": "mascotas" },
-          { "texto": "Vacunas", "icono": "historial", "ir": "mascota/mishi" },
-          { "texto": "Llamar", "icono": "telefono" }
-        ] },
-        { "tipo": "lista", "titulo": "Próximos turnos", "coleccion": "turnos", "futuros": "fecha", "orden": "fecha", "limite": 3, "verTodo": "turnos", "ir": "turno",
-          "item": { "titulo": "{mascota} · {motivo}", "subtitulo": "{fecha|fecha} · {hora} h", "badge": "{estado}", "imagen": "{imagen}" },
-          "vacio": "No tenés turnos próximos.", "vacioIr": "nuevo-turno", "vacioAccion": "Sacar turno" }
+        {
+          "tipo": "hero",
+          "titulo": "Hola, Carla",
+          "texto": "A Mishi le toca la vacuna triple en 15 días.",
+          "accion": {
+            "texto": "Sacar turno",
+            "ir": "nuevo-turno"
+          },
+          "foto": "foto:veterinaria:1"
+        },
+        {
+          "tipo": "accesos",
+          "items": [
+            {
+              "texto": "Turno",
+              "icono": "calendario",
+              "ir": "nuevo-turno"
+            },
+            {
+              "texto": "Mascotas",
+              "icono": "pata",
+              "ir": "mascotas"
+            },
+            {
+              "texto": "Vacunas",
+              "icono": "vacuna",
+              "ir": "mascota/mishi"
+            },
+            {
+              "texto": "Llamar",
+              "icono": "telefono"
+            }
+          ]
+        },
+        {
+          "tipo": "lista",
+          "titulo": "Próximos turnos",
+          "coleccion": "turnos",
+          "futuros": "fecha",
+          "orden": "fecha",
+          "limite": 3,
+          "verTodo": "turnos",
+          "ir": "turno",
+          "item": {
+            "titulo": "{mascota} · {motivo}",
+            "subtitulo": "{fecha|fecha} · {hora} h",
+            "badge": "{estado}",
+            "imagen": "{imagen}"
+          },
+          "vacio": "No tenés turnos próximos.",
+          "vacioIr": "nuevo-turno",
+          "vacioAccion": "Sacar turno"
+        }
       ]
     },
     {
-      "id": "turnos", "titulo": "Turnos", "nav": true, "icono": "calendario",
-      "fab": { "texto": "Nuevo turno", "ir": "nuevo-turno" },
+      "id": "turnos",
+      "titulo": "Turnos",
+      "nav": true,
+      "icono": "calendario",
+      "fab": {
+        "texto": "Nuevo turno",
+        "ir": "nuevo-turno"
+      },
       "bloques": [
-        { "tipo": "lista", "coleccion": "turnos", "buscar": true, "buscarTexto": "Buscar por mascota o motivo", "filtro": "estado", "orden": "-fecha", "ir": "turno",
-          "item": { "titulo": "{mascota} · {motivo}", "subtitulo": "{fecha|fecha} · {hora} h · {profesional}", "badge": "{estado}", "imagen": "{imagen}" } }
+        {
+          "tipo": "lista",
+          "coleccion": "turnos",
+          "buscar": true,
+          "buscarTexto": "Buscar por mascota o motivo",
+          "filtro": "estado",
+          "orden": "-fecha",
+          "ir": "turno",
+          "item": {
+            "titulo": "{mascota} · {motivo}",
+            "subtitulo": "{fecha|fecha} · {hora} h · {profesional}",
+            "badge": "{estado}",
+            "imagen": "{imagen}"
+          }
+        }
       ]
     },
     {
-      "id": "turno", "titulo": "Turno de {mascota}", "de": "turnos", "tab": "turnos",
+      "id": "turno",
+      "titulo": "Turno de {mascota}",
+      "de": "turnos",
+      "tab": "turnos",
       "bloques": [
-        { "tipo": "detalle", "imagen": "{imagen}", "titulo": "{motivo}", "subtitulo": "{fecha|fecha} a las {hora} h", "badge": "{estado}",
-          "campos": [ { "campo": "mascota", "etiqueta": "Mascota" }, { "campo": "profesional", "etiqueta": "Te atiende" }, { "campo": "fecha", "etiqueta": "Día", "formato": "fecha" } ],
+        {
+          "tipo": "detalle",
+          "imagen": "{imagen}",
+          "titulo": "{motivo}",
+          "subtitulo": "{fecha|fecha} a las {hora} h",
+          "badge": "{estado}",
+          "campos": [
+            {
+              "campo": "mascota",
+              "etiqueta": "Mascota"
+            },
+            {
+              "campo": "profesional",
+              "etiqueta": "Te atiende"
+            },
+            {
+              "campo": "fecha",
+              "etiqueta": "Día",
+              "formato": "fecha"
+            }
+          ],
           "acciones": [
-            { "texto": "Confirmar asistencia", "cambiar": { "estado": "Confirmado" }, "exito": "Turno confirmado" },
-            { "texto": "Cancelar turno", "estilo": "peligro", "cambiar": { "estado": "Cancelado" }, "exito": "Turno cancelado" }
-          ] }
+            {
+              "texto": "Confirmar asistencia",
+              "cambiar": {
+                "estado": "Confirmado"
+              },
+              "exito": "Turno confirmado"
+            },
+            {
+              "texto": "Cancelar turno",
+              "estilo": "peligro",
+              "cambiar": {
+                "estado": "Cancelado"
+              },
+              "exito": "Turno cancelado"
+            }
+          ]
+        }
       ]
     },
     {
-      "id": "nuevo-turno", "titulo": "Nuevo turno", "tab": "turnos",
+      "id": "nuevo-turno",
+      "titulo": "Nuevo turno",
+      "tab": "turnos",
       "bloques": [
-        { "tipo": "formulario", "coleccion": "turnos", "enviar": "Reservar turno", "exito": "Turno reservado para {mascota}", "luego": "turnos",
-          "extra": { "estado": "Pendiente", "imagen": "🐾", "profesional": "A confirmar" },
+        {
+          "tipo": "formulario",
+          "coleccion": "turnos",
+          "enviar": "Reservar turno",
+          "exito": "Turno reservado para {mascota}",
+          "luego": "turnos",
+          "extra": {
+            "estado": "Pendiente",
+            "imagen": "calendario",
+            "profesional": "A confirmar"
+          },
           "campos": [
-            { "nombre": "mascota", "etiqueta": "¿Para quién?", "tipo": "chips", "opcionesDe": "mascotas.nombre" },
-            { "nombre": "motivo", "etiqueta": "Motivo", "tipo": "chips", "opciones": ["Control", "Vacuna", "Consulta", "Baño y corte"] },
-            { "nombre": "fecha", "etiqueta": "Día", "tipo": "dia", "dias": 12, "excluir": [0] },
-            { "nombre": "hora", "etiqueta": "Horario", "tipo": "slots", "opciones": ["09:00", "09:30", "10:00", "11:30", "16:00", "16:30", "17:00", "18:30"], "ocupados": ["10:00", "16:30"] },
-            { "nombre": "nota", "etiqueta": "¿Algo que debamos saber?", "tipo": "textarea", "placeholder": "Ej.: está con poco apetito desde ayer" }
-          ] }
+            {
+              "nombre": "mascota",
+              "etiqueta": "¿Para quién?",
+              "tipo": "chips",
+              "opcionesDe": "mascotas.nombre"
+            },
+            {
+              "nombre": "motivo",
+              "etiqueta": "Motivo",
+              "tipo": "chips",
+              "opciones": [
+                "Control",
+                "Vacuna",
+                "Consulta",
+                "Baño y corte"
+              ]
+            },
+            {
+              "nombre": "fecha",
+              "etiqueta": "Día",
+              "tipo": "dia",
+              "dias": 12,
+              "excluir": [
+                0
+              ]
+            },
+            {
+              "nombre": "hora",
+              "etiqueta": "Horario",
+              "tipo": "slots",
+              "opciones": [
+                "09:00",
+                "09:30",
+                "10:00",
+                "11:30",
+                "16:00",
+                "16:30",
+                "17:00",
+                "18:30"
+              ],
+              "ocupados": [
+                "10:00",
+                "16:30"
+              ]
+            },
+            {
+              "nombre": "nota",
+              "etiqueta": "¿Algo que debamos saber?",
+              "tipo": "textarea",
+              "placeholder": "Ej.: está con poco apetito desde ayer"
+            }
+          ]
+        }
       ]
     },
     {
-      "id": "mascotas", "titulo": "Mis mascotas", "etiqueta": "Mascotas", "nav": true, "icono": "corazon",
-      "fab": { "texto": "Agregar", "ir": "nueva-mascota" },
+      "id": "mascotas",
+      "titulo": "Mis mascotas",
+      "etiqueta": "Mascotas",
+      "nav": true,
+      "icono": "pata",
+      "fab": {
+        "texto": "Agregar",
+        "ir": "nueva-mascota"
+      },
       "bloques": [
-        { "tipo": "lista", "coleccion": "mascotas", "estilo": "tarjetas", "ir": "mascota",
-          "item": { "titulo": "{nombre}", "subtitulo": "{especie} · {raza} · {edad}", "badge": "{estado}", "imagen": "{imagen}" },
-          "vacio": "Todavía no cargaste mascotas.", "vacioIr": "nueva-mascota", "vacioAccion": "Agregar mascota" }
+        {
+          "tipo": "lista",
+          "coleccion": "mascotas",
+          "estilo": "tarjetas",
+          "ir": "mascota",
+          "item": {
+            "titulo": "{nombre}",
+            "subtitulo": "{especie} · {raza} · {edad}",
+            "badge": "{estado}",
+            "imagen": "{imagen}"
+          },
+          "vacio": "Todavía no cargaste mascotas.",
+          "vacioIr": "nueva-mascota",
+          "vacioAccion": "Agregar mascota"
+        }
       ]
     },
     {
-      "id": "mascota", "titulo": "{nombre}", "de": "mascotas", "tab": "mascotas",
+      "id": "mascota",
+      "titulo": "{nombre}",
+      "de": "mascotas",
+      "tab": "mascotas",
       "bloques": [
-        { "tipo": "detalle", "imagen": "{imagen}", "titulo": "{nombre}", "subtitulo": "{raza} · {edad} · {peso}", "badge": "{estado}",
-          "campos": [ { "campo": "especie", "etiqueta": "Especie" }, { "campo": "dueno", "etiqueta": "Responsable" } ] },
-        { "tipo": "lista", "titulo": "Historial de vacunas", "coleccion": "vacunas", "donde": { "mascotaId": "{id}" }, "orden": "-fecha", "estilo": "timeline",
-          "item": { "titulo": "{nombre}", "subtitulo": "Aplicada: {fecha|fecha}", "detalle": "Próxima dosis: {proxima|fecha}" },
-          "vacio": "Sin vacunas registradas." },
-        { "tipo": "aviso", "tono": "alerta", "texto": "Te avisamos por WhatsApp 3 días antes de cada vacuna." }
-      ]
-    },
-    {
-      "id": "nueva-mascota", "titulo": "Nueva mascota", "tab": "mascotas",
-      "bloques": [
-        { "tipo": "formulario", "coleccion": "mascotas", "enviar": "Guardar mascota", "exito": "{nombre} ya está en tu cuenta", "luego": "mascotas",
-          "extra": { "imagen": "🐾", "estado": "Sin vacunas cargadas", "dueno": "Carla Gómez" },
+        {
+          "tipo": "detalle",
+          "imagen": "{imagen}",
+          "titulo": "{nombre}",
+          "subtitulo": "{raza} · {edad} · {peso}",
+          "badge": "{estado}",
           "campos": [
-            { "nombre": "nombre", "etiqueta": "Nombre", "placeholder": "Ej.: Lola" },
-            { "nombre": "especie", "etiqueta": "Especie", "tipo": "chips", "opciones": ["Perro", "Gato", "Otro"] },
-            { "nombre": "raza", "etiqueta": "Raza", "placeholder": "Ej.: Caniche", "requerido": false },
-            { "nombre": "edad", "etiqueta": "Edad", "placeholder": "Ej.: 3 años" }
-          ] }
+            {
+              "campo": "especie",
+              "etiqueta": "Especie"
+            },
+            {
+              "campo": "dueno",
+              "etiqueta": "Responsable"
+            }
+          ]
+        },
+        {
+          "tipo": "lista",
+          "titulo": "Historial de vacunas",
+          "coleccion": "vacunas",
+          "donde": {
+            "mascotaId": "{id}"
+          },
+          "orden": "-fecha",
+          "estilo": "timeline",
+          "item": {
+            "titulo": "{nombre}",
+            "subtitulo": "Aplicada: {fecha|fecha}",
+            "detalle": "Próxima dosis: {proxima|fecha}"
+          },
+          "vacio": "Sin vacunas registradas."
+        },
+        {
+          "tipo": "aviso",
+          "tono": "alerta",
+          "texto": "Te avisamos por WhatsApp 3 días antes de cada vacuna."
+        }
       ]
     },
     {
-      "id": "cuenta", "titulo": "Mi cuenta", "etiqueta": "Cuenta", "nav": true, "icono": "usuario",
+      "id": "nueva-mascota",
+      "titulo": "Nueva mascota",
+      "tab": "mascotas",
       "bloques": [
-        { "tipo": "perfil", "nombre": "Carla Gómez", "detalle": "2 mascotas · cliente desde 2023", "imagen": "👩🏻", "items": [
-          { "texto": "Recordatorios por WhatsApp", "icono": "campana" },
-          { "texto": "Pagos y comprobantes", "icono": "dinero" }
-        ] },
-        { "tipo": "mapa", "titulo": "Dónde estamos", "lugar": "Veterinaria Patitas", "direccion": "Av. Corrientes 4520, CABA", "horario": "Lunes a sábado, 9 a 20 h" }
+        {
+          "tipo": "formulario",
+          "coleccion": "mascotas",
+          "enviar": "Guardar mascota",
+          "exito": "{nombre} ya está en tu cuenta",
+          "luego": "mascotas",
+          "extra": {
+            "imagen": "pata",
+            "estado": "Sin vacunas cargadas",
+            "dueno": "Carla Gómez"
+          },
+          "campos": [
+            {
+              "nombre": "nombre",
+              "etiqueta": "Nombre",
+              "placeholder": "Ej.: Lola"
+            },
+            {
+              "nombre": "especie",
+              "etiqueta": "Especie",
+              "tipo": "chips",
+              "opciones": [
+                "Perro",
+                "Gato",
+                "Otro"
+              ]
+            },
+            {
+              "nombre": "raza",
+              "etiqueta": "Raza",
+              "placeholder": "Ej.: Caniche",
+              "requerido": false
+            },
+            {
+              "nombre": "edad",
+              "etiqueta": "Edad",
+              "placeholder": "Ej.: 3 años"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cuenta",
+      "titulo": "Mi cuenta",
+      "etiqueta": "Cuenta",
+      "nav": true,
+      "icono": "usuario",
+      "bloques": [
+        {
+          "tipo": "perfil",
+          "nombre": "Carla Gómez",
+          "detalle": "2 mascotas · cliente desde 2023",
+          "imagen": "iniciales",
+          "items": [
+            {
+              "texto": "Recordatorios por WhatsApp",
+              "icono": "campana"
+            },
+            {
+              "texto": "Pagos y comprobantes",
+              "icono": "dinero"
+            }
+          ]
+        },
+        {
+          "tipo": "mapa",
+          "titulo": "Dónde estamos",
+          "lugar": "Veterinaria Patitas",
+          "direccion": "Av. Corrientes 4520, CABA",
+          "horario": "Lunes a sábado, 9 a 20 h"
+        }
       ]
     }
   ]

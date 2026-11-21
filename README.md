@@ -80,7 +80,7 @@ audio ──► transcribe.mjs (Groq Whisper) ──► texto
 ```
 
 - **Claude decide, los scripts calculan.** Claude elige qué funcionalidades van en cada opción y su complejidad; `quote.mjs` saca horas, precios y plazos con una tabla fija y tu tarifa. Los números siempre cuadran.
-- **Prototipos con un motor probado.** Claude no escribe HTML: describe pantallas y datos en `app.json` y un motor de un solo archivo arma la app con navegación, formularios que guardan, carrito, filtros, búsqueda, mapa y estados vacíos. Es más rápido y nunca sale roto. Hay 5 estilos según el rubro (salud, barbería, comida, bienestar, servicios).
+- **Prototipos con un motor probado.** Claude no escribe HTML: describe pantallas y datos en `app.json` y un motor de un solo archivo arma la app con navegación, formularios que guardan, carrito, filtros, búsqueda, mapa y estados vacíos. Es más rápido y nunca sale roto. Hay 5 estilos según el rubro (salud, barbería, comida, bienestar, servicios), fotos reales de libre uso curadas por rubro, íconos de un set profesional (Lucide) e iniciales para las personas: nada de emojis, para que se vea como una app de verdad que se le puede mostrar a un cliente.
 - **Sin dependencias.** Scripts en Node 20 puro: `fetch`, `FormData`, un servidor estático y un generador de QR propios.
 
 ## Costos por corrida

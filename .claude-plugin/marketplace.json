@@ -10,7 +10,7 @@
       "name": "trato",
       "source": "./",
       "description": "Del audio de WhatsApp del cliente a brief, cotización, prototipo publicado y propuesta lista para enviar, en 5 minutos.",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "category": "productivity"
     }
   ]
